@@ -125,7 +125,6 @@ export default class Welcome extends Component {
 
                 <Input
 
-                    style={styles.input}
                     autoCapitalize="none"
                     autoCorrect={false}
                     placeholder="Digite seu usuário"
@@ -135,7 +134,7 @@ export default class Welcome extends Component {
 
                 />
 
-                <Button style={styles.button} onPress={this.signIn}>
+                <Button onPress={this.signIn}>
 
                     { this.state.loading
                     ? <ActivityIndicator size="small" color='#FFF' />
