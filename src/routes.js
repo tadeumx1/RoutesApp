@@ -1,30 +1,41 @@
-import {createBottomTabNavigator, createStackNavigator, createSwitchNavigator} from "react-navigation";
-import SearchScreen from "./SearchScreen/SearchScreen";
-import JobsScreen from "./JobsScreen/JobsScreen";
-import SettingsScreen from "./SettingsScreen";
+import { createBottomTabNavigator, createStackNavigator, createSwitchNavigator, createAppContainer } from "react-navigation";
+
+import Information from "./pages/Information/Information";
+import MapScreen from "./pages/MapScreen/MapScreen";
+import Routes from "./pages/Routes/Routes";
+import SettingsScreen from "./pages/SettingsScreen/SettingsScreen";
+
 import Icon from "react-native-vector-icons/Feather";
-import colors from "../styles/colors";
-import metrics from "../styles/metrics";
-import LoginScreen from "./Auth/LoginScreen";
-import RegisterStudent from "./Auth/RegisterStudent";
-import AuthLoadingScreen from "./Auth/AuthLoadingScreen";
+import colors from "./styles/colors";
+import metrics from "./styles/metrics";
+
+import LoginScreen from "./pages/Welcome/Welcome";
+import RegisterUser from "./pages/RegisterUser/RegisterUser";
+import AuthLoadingScreen from "./pages/AuthLoadingScreen";
+import HomeLoadingScreen from "./pages/HomeLoadingScreen";
 import React from "react";
 
 const TabNav = createBottomTabNavigator(
 	{
-		Jobs: {
-			screen: JobsScreen,
+		Information: {
+			screen: Information,
 			navigationOptions: {
-				title: 'Vagas'
+				title: 'Information'
 			}
 		},
-		Search: {
-			screen: SearchScreen,
+		MapScreen: {
+			screen: MapScreen,
 			navigationOptions: {
-				title: 'Busca'
+				title: 'Map'
 			}
 		},
-		Profile: {
+		/* Routes: {
+			screen: Routes,
+			navigationOptions: {
+				title: 'Rotas'
+			}
+		}, */
+		SettingsScreen: {
 			screen: SettingsScreen,
 			navigationOptions: {
 				title: 'Perfil'
@@ -32,21 +43,24 @@ const TabNav = createBottomTabNavigator(
 		},
 	},
 	{
-		navigationOptions: ({ navigation }) => ({
+		defaultNavigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused, tintColor }) => {
 				const { routeName } = navigation.state;
 				let iconName;
 
 				switch (routeName) {
-					case 'Search':
-						iconName = `search`;
+					case 'Information':
+						iconName = `info`;
 						break;
-					case 'Jobs':
-						iconName = `briefcase`;
+					case 'MapScreen':
+						iconName = `map`;
 						break;
-					case 'Profile':
+					/* case 'Routes':
+						iconName = `map-pin`;
+						break; */
+					case 'SettingsScreen':
 						iconName = `user`;
-						break;
+						break;	
 				}
 
 				// You can return any component that you like here! We usually use an
@@ -54,13 +68,13 @@ const TabNav = createBottomTabNavigator(
 				return <Icon name={iconName} size={24} color={tintColor} />;
 			},
 		}),
-		initialRouteName: 'Profile',
+		initialRouteName: 'MapScreen',
 		tabBarOptions: {
 			activeTintColor: colors.primary,
-			inactiveTintColor: '#ccc',
+			inactiveTintColor: '#000',
 			style: {
 				backgroundColor: colors.white,
-				height: metrics.tabBarHeight,
+				// height: metrics.tabBarHeight,
 				paddingHorizontal: metrics.padding,
 				borderColor: '#eee',
 			}
@@ -68,10 +82,13 @@ const TabNav = createBottomTabNavigator(
 	}
 );
 
+const TabNavContainer = createAppContainer(TabNav);
+
 const AuthStack = createStackNavigator(
 	{
 		SignIn: LoginScreen,
-		SignUpStudent: RegisterStudent
+		App: TabNavContainer,
+		SignUpStudent: RegisterUser
 	},
 	{
 		initialRouteName: 'SignIn',
@@ -80,11 +97,13 @@ const AuthStack = createStackNavigator(
 	}
 );
 
+const AuthStackContainer = createAppContainer(AuthStack);
+
 const RootStack = createSwitchNavigator(
 	{
 		AuthLoading: { screen: AuthLoadingScreen },
-		App: { screen: TabNav },
-		Auth: { screen: AuthStack }
+		App: { screen: TabNavContainer },
+		Auth: { screen: AuthStackContainer }
 	},
 	{
 		initialRouteName: 'AuthLoading',
@@ -95,4 +114,6 @@ const RootStack = createSwitchNavigator(
 	}
 );
 
-export default RootStack
+const RootStackContainer = createAppContainer(RootStack);
+
+export default RootStackContainer

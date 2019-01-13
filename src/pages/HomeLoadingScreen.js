@@ -1,5 +1,6 @@
-import React from 'react';
-import Loading from "../components/Loading/Loading";
+import React, { Component } from 'react';
+import { Text } from 'react-native';
+// import Loading from "../components/Loading/Loading";
 import {AsyncStorage} from "react-native";
 
 class HomeLoadingScreen extends React.Component {
@@ -11,7 +12,8 @@ class HomeLoadingScreen extends React.Component {
                 // This will switch to the App screen or Auth screen and this loading
                 // screen will be unmounted and thrown away.
 
-                this.props.navigation.navigate(user.token === 1 ? 'Jobs' : 'Auth');
+                // this.props.navigation.navigate(user.token === 1 ? 'Jobs' : 'Auth');
+                this.props.navigation.navigate('Jobs');
             })
             .catch(error => console.error(error))
     }
@@ -30,7 +32,8 @@ class HomeLoadingScreen extends React.Component {
     // Render any loading content that you like here
     render() {
         return (
-            <Loading/>
+            // <Loading/>
+            <Text>Carregando</Text>
         );
     }
 }

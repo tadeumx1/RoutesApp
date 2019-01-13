@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
-import api from 'services/api'
-
-import { Container, Title, Error, Form, Input, ButtonText } from './styles';
 
 import { 
 
@@ -44,19 +41,9 @@ export default class Welcome extends Component {
         
     }
 
-    checkUserExists = async (username) => {
-
-        const user = await api.get(`/users/${username}`);
-
-        console.log(user);
-
-        return user;
-
-    }
-
     saveUser = async (username) => {
 
-        await AsyncStorage.setItem('@Githuber:username', username)
+        await AsyncStorage.setItem('@MapsRoutes:username', username)
 
     }
 
@@ -70,16 +57,14 @@ export default class Welcome extends Component {
 
         try {
 
-            await this.checkUserExists(username);
-
             await this.saveUser(username);
 
-            const resetAction = NavigationActions.reset ({
+            const resetAction = StackActions.reset ({
 
                 index: 0,
                 actions: [
     
-                    NavigationActions.navigate({ routeName: 'User' }),
+                    NavigationActions.navigate({ routeName: 'App' }),
     
                 ]
     
@@ -87,44 +72,36 @@ export default class Welcome extends Component {
     
             this.props.navigation.dispatch(resetAction);
 
-            // resto
-
         } catch(err) {
-
-            // erro
 
             this.setState({ loading: false, errorMessage: 'Usuário não existe' });
 
         }
-
-        // Com isso podemos ver todas as props que esse componente recebe
-        // incluindo as props que o React Navigation passa
-
-        //console.log(this.props);
 
     }
 
     render() {
       return (
 
-        <Container>
+        <View style={styles.container}>
 
             <StatusBar barStyle="light-content" /> 
 
-            <Title>Bem-vindo</Title>
-            <TextInformation>
+            <Text style={styles.title}>Bem-vindo</Text>
+            <Text style={styles.text}>
         
-                Para continuar, precisamos que você informe seu usuário no Github
+                Para continuar, precisamos que você informe seu usuário
         
-            </TextInformation>
+            </Text>
 
             { !!this.state.errorMessage 
-                && <Error>{this.state.errorMessage}</Error> }
+                && <Text style={styles.error}>{this.state.errorMessage}</Text> }
 
-            <Form>
+            <View style={styles.form}>
 
-                <Input
+                <TextInput
 
+                    style={styles.input}
                     autoCapitalize="none"
                     autoCorrect={false}
                     placeholder="Digite seu usuário"
@@ -134,17 +111,17 @@ export default class Welcome extends Component {
 
                 />
 
-                <Button onPress={this.signIn}>
+                <TouchableOpacity style={styles.button} onPress={this.signIn}>
 
                     { this.state.loading
                     ? <ActivityIndicator size="small" color='#FFF' />
-                    : <ButtonText>Prosseguir</ButtonText> }
+                    : <Text style={styles.buttonText}>Prosseguir</Text> }
 
-                </Button>
+                </TouchableOpacity>
 
-            </Form>
+            </View>
 
-        </Container>
+        </View>
       )
     }
 };
