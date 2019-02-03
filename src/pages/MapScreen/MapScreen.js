@@ -1,28 +1,69 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, PermissionsAndroid } from 'react-native';
 
-import MapView from 'react-native-maps'
+import Map from '../../components/Map'
+
+import Snackbar from 'react-native-snackbar';
 
 export default class MapScreen extends Component {
+
+  state = {
+
+    location: false,
+
+  }
+
+  async requestLocationPermission() {
+    try {
+
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+                'title': 'App Location Permission',
+                'message': 'Maps App needs access to your map ' +
+                    'so you can be navigated.'
+            }
+        );
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("You can use the location");
+            return true;
+
+        } else {
+            console.log("location permission denied");
+            return false;
+        }
+
+    } catch (err) {
+        console.warn(err)
+    }
+
+  }
+
+  async componentDidMount() {
+    let isGranted = await this.requestLocationPermission();
+    if (isGranted) {
+
+      await this.setState({ location: true })
+
+      Snackbar.show({
+        title: 'Acesso a localização concluído',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
+    }
+
+  }
 
   render() {
     return (
 
       <View style={styles.container}>
 
-        <MapView
-          style={styles.map}
-          loadingEnabled={true}
-          region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          }}
-        >
+      {this.state.location ? ( 
+        <Map /> 
+      ) : <Map message={true} />}
         
-        </MapView>
-
       </View>
 
     );
@@ -36,16 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-
-  },
-
-  map: {
-
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
 
   },
 
