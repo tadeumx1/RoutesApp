@@ -1,47 +1,88 @@
-import React from 'react';
-import {
-    AsyncStorage,
-    StatusBar,
-    View,
-    Text,
-} from 'react-native';
-// import LottieView from 'lottie-react-native';
-// import Loading from "../../components/Loading/Loading";
-// import {getUser} from "../../helpers";
+import React, { Component } from 'react';
+import { createStackNavigator, createAppContainer, StackActions, NavigationActions } from 'react-navigation';
 
-class AuthLoadingScreen extends React.Component {
+import { View, Text, AsyncStorage, ActivityIndicator } from 'react-native';
 
-    constructor(props) {
-        super(props);
-        AuthLoadingScreen._bootstrapAsync()
-            .then(user => {
-                // This will switch to the App screen or Auth screen and this loading
-                // screen will be unmounted and thrown away.
+// import HeaderRight from 'components/HeaderRight';
 
-                // this.props.navigation.navigate(user ? 'App' : 'Auth');
-                this.props.navigation.navigate('Auth');
-            })
-            .catch(error => { throw error })
+export default class AuthLoadingScreen extends Component {
+  
+  static navigationOptions = {
+
+    header: null
+
+  }  
+
+  state = {
+
+    userChecked: false,
+    userLogged: false,
+
+  }  
+
+  async componentDidMount() {
+
+    const username = await AsyncStorage.getItem('@RoutesApp:username');
+
+    await this.appLoaded(username);
+
+    if(this.state.userLogged == true) {
+
+        const resetAction = StackActions.reset ({
+
+            index: 0,
+            actions: [
+
+                NavigationActions.navigate({ routeName: 'App' }),
+
+            ]
+
+        });
+
+        this.props.navigation.dispatch(resetAction);
+
+
+    } else {
+
+        const resetAction = StackActions.reset ({
+
+            index: 0,
+            actions: [
+
+                NavigationActions.navigate({ routeName: 'Welcome' }),
+
+            ]
+
+        });
+
+        this.props.navigation.dispatch(resetAction);
+
     }
 
-    componentDidMount() {
+  }
 
-        this.props.navigation.navigate('Auth');
+  appLoaded = (username) => {
 
-    }
+    this.setState({
 
-    // Fetch the token from storage then navigate to our appropriate place
-     static async _bootstrapAsync () {
-          // return await getUser()
-    };
+      userChecked: true,
+      userLogged: !!username,
 
-    // Render any loading content that you like here
-    render() {
-        return (
-            // <Loading />
-            <Text>Carregando AuthLoading</Text>
-        );
-    }
+    })
+
+  }
+
+  render() {
+
+    if(!this.state.userChecked) return null;
+
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+        <ActivityIndicator size="large" color="#00ff00" />
+
+      </View>
+    );
+  }
+
 }
-
-export default AuthLoadingScreen;

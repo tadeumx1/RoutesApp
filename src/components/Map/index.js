@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Dimensions, TouchableOpacity, Platform, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, AsyncStorage, Dimensions, TouchableOpacity, Platform, ScrollView} from 'react-native';
 
 import MapView, { Marker, AnimatedRegion, Polyline } from 'react-native-maps';
 // import getDirections from 'react-native-google-maps-directions'
@@ -62,6 +62,18 @@ export default class Map extends Component {
 
     }
 
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+      },
+      (error) => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+
   }
 
   handleStartButton = async () => {
@@ -95,22 +107,8 @@ export default class Map extends Component {
 
       await navigator.geolocation.clearWatch(this.watchID);
 
-      this.setState({
-
-        routeCoordinates: [],
-        distanceTravelled: 0,
-        buttonText: '',
-        active: false,
-        prevLatLng: {},
-        coordinate: new AnimatedRegion({
-          latitude: LATITUDE,
-          longitude: LONGITUDE
-        })
-
-      })
-
       Snackbar.show({
-        title: 'Parou',
+        title: 'A rota foi encerrada',
         duration: Snackbar.LENGTH_LONG,
       });
 
@@ -151,7 +149,10 @@ export default class Map extends Component {
            prevLatLng: newCoordinate
          });
 
-         alert('' + newCoordinate)
+         /* Snackbar.show({
+          title: 'Atualizou ' + newCoordinate.latitude + ' ' + newCoordinate.longitude,
+          duration: Snackbar.LENGTH_SHORT,
+         }); */
 
        },
        error => console.log(error),
@@ -197,9 +198,7 @@ export default class Map extends Component {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.handleStopButton} style={[styles.bubble, styles.button]}>
-            <Text style={styles.bottomBarContent}>
-            Stop {parseFloat(this.state.distanceTravelled).toFixed(2)} km
-            </Text>
+            <Text style={styles.bottomBarContent}>Stop</Text>
           </TouchableOpacity>
         </View>
 

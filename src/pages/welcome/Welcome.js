@@ -43,7 +43,7 @@ export default class Welcome extends Component {
 
     saveUser = async (username) => {
 
-        await AsyncStorage.setItem('@MapsRoutes:username', username)
+        await AsyncStorage.setItem('@RoutesApp:username', username)
 
     }
 
