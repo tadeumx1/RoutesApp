@@ -8,6 +8,8 @@ import Snackbar from 'react-native-snackbar';
 import haversine from 'haversine';
 import idx from 'idx';
 
+import { getPixelSize } from '../../utils';
+
 const LATITUDE = 29.95539;
 const LONGITUDE = 78.07513;
 const LATITUDE_DELTA = 0.009;
@@ -46,7 +48,8 @@ export default class Map extends Component {
     latitude: this.state.latitude,
     longitude: this.state.longitude,
     latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
+    longitudeDelta: LONGITUDE_DELTA,
+
   });
 
   async componentDidMount() {
@@ -63,11 +66,10 @@ export default class Map extends Component {
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+     async (position) => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          error: null,
         });
       },
       (error) => console.log(error),
@@ -105,14 +107,27 @@ export default class Map extends Component {
 
     if(this.state.active) {
 
+      // alert('final ' + JSON.stringify(this.state.routeCoordinates))
+
       await navigator.geolocation.clearWatch(this.watchID);
 
-      Snackbar.show({
-        title: 'A rota foi encerrada',
-        duration: Snackbar.LENGTH_LONG,
+      this.mapView.fitToCoordinates((this.state.routeCoordinates), {
+
+        edgePadding: {
+          right: getPixelSize(50),
+          left: getPixelSize(50),
+          top: getPixelSize(50),
+          bottom: getPixelSize(50),
+        }
+
       });
 
     }
+
+    Snackbar.show({
+      title: 'A rota foi encerrada',
+      duration: Snackbar.LENGTH_LONG,
+    });
 
   }
 
@@ -178,6 +193,7 @@ export default class Map extends Component {
           showUserLocation={true}
           followUserLocation
           loadingEnabled
+          ref={el => this.mapView = el}
           region={this.getMapRegion()}
         >
           <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
