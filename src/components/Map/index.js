@@ -52,29 +52,29 @@ export default class Map extends Component {
 
   });
 
-  async componentDidMount() {
+  componentDidMount() {
 
-    const locationMessage = idx(this.props, (_) => _.message);
+    navigator.geolocation.getCurrentPosition(
+    (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => alert(JSON.stringify(error)),
+      { enableHighAccuracy: true, timeout: 2000, maximumAge: 1000 },
+    );
 
-    if(locationMessage) {
+    // const locationMessage = idx(this.props, (_) => _.message);
+
+    /* if(locationMessage) {
 
         Snackbar.show({
             title: 'Localização não habilitada, ative a localização e reinicie o aplicativo',
             duration: Snackbar.LENGTH_LONG,
         });
 
-    }
-
-    navigator.geolocation.getCurrentPosition(
-     async (position) => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      (error) => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    } */
 
   }
 
@@ -171,7 +171,7 @@ export default class Map extends Component {
 
        },
        error => console.log(error),
-       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 0.5 }
+       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1 }
     );
 
   };

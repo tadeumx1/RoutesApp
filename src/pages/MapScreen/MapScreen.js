@@ -46,8 +46,15 @@ export default class MapScreen extends Component {
 
       await this.setState({ location: true })
 
-      Snackbar.show({
+      await Snackbar.show({
         title: 'Acesso a localização concluído',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
+    } else {
+
+      Snackbar.show({
+        title: 'Localização não habilitada, ative a localização e reinicie o aplicativo',
         duration: Snackbar.LENGTH_LONG,
       });
 
