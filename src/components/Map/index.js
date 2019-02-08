@@ -28,6 +28,7 @@ export default class Map extends Component {
     latitude: LATITUDE,
     longitude: LONGITUDE,
     routeCoordinates: [],
+    selectCoordinates: null,
     distanceTravelled: 0,
     buttonText: '',
     active: false,
@@ -105,6 +106,8 @@ export default class Map extends Component {
 
   handleStopButton = async () => {
 
+    this.setState({ selectCoordinates: null })
+
     if(this.state.active) {
 
       // alert('final ' + JSON.stringify(this.state.routeCoordinates))
@@ -164,17 +167,18 @@ export default class Map extends Component {
            prevLatLng: newCoordinate
          });
 
-         /* Snackbar.show({
-          title: 'Atualizou ' + newCoordinate.latitude + ' ' + newCoordinate.longitude,
-          duration: Snackbar.LENGTH_SHORT,
-         }); */
-
        },
        error => console.log(error),
        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1 }
     );
 
   };
+
+  handlePressMap = (e) => {
+
+    this.setState({ selectCoordinates: e.nativeEvent.coordinate })
+
+  }
 
   componentWillUnmount() {
 
@@ -193,9 +197,11 @@ export default class Map extends Component {
           showUserLocation={true}
           followUserLocation
           loadingEnabled
+          showsCompass={true}
           ref={el => this.mapView = el}
+          onPress={(e) => this.handlePressMap(e)}
           region={this.getMapRegion()}
-        >
+        > 
           <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
 
           <Marker.Animated
@@ -204,6 +210,17 @@ export default class Map extends Component {
           }}
           coordinate={this.state.coordinate}
           />
+
+          {this.state.selectCoordinates && (
+
+            <Marker.Animated
+            ref={marker => {
+              this.markerSelect = marker;
+            }}
+            coordinate={this.state.selectCoordinates}
+            />
+
+          )}
 
         </MapView>
 
