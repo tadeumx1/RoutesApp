@@ -32,6 +32,7 @@ export default class Map extends Component {
     distanceTravelled: 0,
     buttonText: '',
     active: false,
+    currentTime: null,
     prevLatLng: {},
     coordinate: new AnimatedRegion({
      latitude: LATITUDE,
@@ -110,8 +111,6 @@ export default class Map extends Component {
 
     if(this.state.active) {
 
-      // alert('final ' + JSON.stringify(this.state.routeCoordinates))
-
       await navigator.geolocation.clearWatch(this.watchID);
 
       this.mapView.fitToCoordinates((this.state.routeCoordinates), {
@@ -167,6 +166,14 @@ export default class Map extends Component {
            prevLatLng: newCoordinate
          });
 
+         setInterval( () => {
+          this.setState({
+            currentTime : new Date().toLocaleString()
+          })
+         },1000)
+
+        // const speed = this.calcDistance(newCoordinate) /
+
        },
        error => console.log(error),
        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1 }
@@ -213,12 +220,13 @@ export default class Map extends Component {
 
           {this.state.selectCoordinates && (
 
-            <Marker.Animated
-            ref={marker => {
-              this.markerSelect = marker;
-            }}
-            coordinate={this.state.selectCoordinates}
-            />
+            <MapView.Marker
+              coordinate={this.state.selectCoordinates}
+            >
+            <MapView.Callout onPress={() => {}}>
+              <Text>Coodernadas</Text>
+            </MapView.Callout>
+            </MapView.Marker>
 
           )}
 
@@ -228,6 +236,9 @@ export default class Map extends Component {
           <TouchableOpacity onPress={this.handleStartButton} style={[styles.bubble, styles.button]}>
             <Text style={styles.bottomBarContent}>
             Start {parseFloat(this.state.distanceTravelled).toFixed(2)} km
+            </Text>
+            <Text>
+            {this.state.currentTime}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.handleStopButton} style={[styles.bubble, styles.button]}>
