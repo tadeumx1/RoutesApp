@@ -1,18 +1,19 @@
 
 import { call, put, select } from 'redux-saga/effects';
-import api from 'services/api';
+// import api from '../../services/api';
 
-import { Creators as FavoriteActions } from 'store/ducks/favorites';
+import { Creators as TimeActions } from '../ducks/time';
 
-// Função Generator
+export function* startTimeSaga() {
 
-// O Generator é parecido com async e await
-
-// O * é como se fosse o async e o yield o await
-
-// Ele é uma função que permite iterar os valores da função, chamando ela várias vezes
-
-// O Saga sempre vai receber o objeto da Action que nem o Reducer recebe
+    const runner = yield call(setInterval, () => {
+      // console.log('yes');
+      // alert('yeeeeess')
+      put(TimeActions.addTime(new Date().toLocaleString()));
+    }, 1000);
+    
+    console.log(runner);
+}
 
 export function* addFavoriteRequest(action) {
 

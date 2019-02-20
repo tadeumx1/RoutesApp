@@ -8,6 +8,10 @@ import Snackbar from 'react-native-snackbar';
 import haversine from 'haversine';
 import idx from 'idx';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as TimeActions } from '../../store/ducks/time';
+
 import { getPixelSize } from '../../utils';
 
 const LATITUDE = 29.95539;
@@ -15,7 +19,7 @@ const LONGITUDE = 78.07513;
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
 
-export default class Map extends Component {
+class Map extends Component {
 
   static navigationOptions = {
 
@@ -32,7 +36,8 @@ export default class Map extends Component {
     distanceTravelled: 0,
     buttonText: '',
     active: false,
-    currentTime: null,
+    markerActive: false,
+    // currentTime: null,
     prevLatLng: {},
     coordinate: new AnimatedRegion({
      latitude: LATITUDE,
@@ -82,33 +87,6 @@ export default class Map extends Component {
 
   handleStartButton = async () => {
 
-    this.setState({ 
-
-      routeCoordinates: [],
-      distanceTravelled: 0,
-      buttonText: '',
-      active: true,
-      prevLatLng: {},
-      coordinate: new AnimatedRegion({
-        latitude: LATITUDE,
-        longitude: LONGITUDE
-      })
-
-     })
-
-    await this.getLocation()
-
-    Snackbar.show({
-      title: 'Começou',
-      duration: Snackbar.LENGTH_LONG,
-    });
-
-  }
-
-  handleStopButton = async () => {
-
-    this.setState({ selectCoordinates: null })
-
     if(this.state.active) {
 
       await navigator.geolocation.clearWatch(this.watchID);
@@ -124,12 +102,59 @@ export default class Map extends Component {
 
       });
 
+      Snackbar.show({
+        title: 'A rota foi encerrada',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
+    } else { 
+
+      this.setState({ 
+
+        routeCoordinates: [],
+        distanceTravelled: 0,
+        buttonText: '',
+        active: true,
+        prevLatLng: {},
+        coordinate: new AnimatedRegion({
+          latitude: LATITUDE,
+          longitude: LONGITUDE
+        })
+  
+       })
+
+      /* setInterval(() => {
+        this.setState({
+          currentTime : new Date().toLocaleString()
+        })
+      },1000) */
+
+      try { 
+        this.props.startTime()
+      } catch(err) {
+
+        alert('erro ' + err)
+
+      }
+
+      await this.getLocation()
+  
+      Snackbar.show({
+        title: 'A rota está sendo gravada',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
     }
 
-    Snackbar.show({
-      title: 'A rota foi encerrada',
-      duration: Snackbar.LENGTH_LONG,
-    });
+  }
+
+  handleMarkerButton = async () => {
+
+    if(this.state.markerActive) {
+
+      this.setState({ selectCoordinates: null, markerActive: false })
+
+    }
 
   }
 
@@ -166,12 +191,6 @@ export default class Map extends Component {
            prevLatLng: newCoordinate
          });
 
-         setInterval( () => {
-          this.setState({
-            currentTime : new Date().toLocaleString()
-          })
-         },1000)
-
         // const speed = this.calcDistance(newCoordinate) /
 
        },
@@ -183,7 +202,7 @@ export default class Map extends Component {
 
   handlePressMap = (e) => {
 
-    this.setState({ selectCoordinates: e.nativeEvent.coordinate })
+    this.setState({ selectCoordinates: e.nativeEvent.coordinate, markerActive: true })
 
   }
 
@@ -218,7 +237,7 @@ export default class Map extends Component {
           coordinate={this.state.coordinate}
           />
 
-          {this.state.selectCoordinates && (
+          { this.state.selectCoordinates && (
 
             <MapView.Marker
               coordinate={this.state.selectCoordinates}
@@ -235,14 +254,14 @@ export default class Map extends Component {
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this.handleStartButton} style={[styles.bubble, styles.button]}>
             <Text style={styles.bottomBarContent}>
-            Start {parseFloat(this.state.distanceTravelled).toFixed(2)} km
+            Rota {parseFloat(this.state.distanceTravelled).toFixed(2)} km
             </Text>
             <Text>
-            {this.state.currentTime}
+            {this.props.time.time}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.handleStopButton} style={[styles.bubble, styles.button]}>
-            <Text style={styles.bottomBarContent}>Stop</Text>
+          <TouchableOpacity onPress={this.handleMarkerButton} style={[styles.bubble, styles.button]}>
+            <Text style={styles.bottomBarContent}>Marker</Text>
           </TouchableOpacity>
         </View>
 
@@ -299,3 +318,16 @@ const styles = StyleSheet.create({
     }
    
   });
+
+const mapStateToProps = state => ({
+
+    time: state.time,
+  
+    // favoritesCount: state.favorites.data.length,
+    // error: state.favorites.errorOnAdd,
+  
+});
+  
+const mapDispatchToProps = dispatch => bindActionCreators(TimeActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

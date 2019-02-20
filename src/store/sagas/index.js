@@ -5,8 +5,8 @@
 
 import { all, takeLatest } from 'redux-saga/effects';
 
-import { Types as FavoriteTypes } from 'store/ducks/favorites';
-import { addFavoriteRequest } from './favorites';
+import { Types as TimeTypes } from '../ducks/time';
+import { startTimeSaga } from './time';
 
 // Função Generator function*
 
@@ -30,7 +30,7 @@ export default function* rootSaga() {
         // Com o TakeLatest devemos colocar o type da Action
         // e o Saga que deverá ser executado após aquela Action ser chamada
 
-        takeLatest(FavoriteTypes.ADD_REQUEST, addFavoriteRequest)
+        takeLatest(TimeTypes.START_TIME, startTimeSaga)
 
     ]);
 

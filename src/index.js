@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
 import RootStackContainer from './routes';
+import { Provider } from 'react-redux';
+
+import "./config/ReactotronConfig"
+import store from './store';
 
 export default class App extends Component {
 
@@ -8,7 +12,11 @@ export default class App extends Component {
 
     return (
 
-      <RootStackContainer />
+      <Provider store={store}>
+
+        <RootStackContainer />
+
+      </Provider>
 
     );
   }
