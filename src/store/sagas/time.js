@@ -1,18 +1,61 @@
-
 import { call, put, select } from 'redux-saga/effects';
 // import api from '../../services/api';
+
+import { eventChannel, END } from 'redux-saga'
 
 import { Creators as TimeActions } from '../ducks/time';
 
 export function* startTimeSaga() {
 
-    const runner = yield call(setInterval, () => {
+    /* const runner = yield call(setInterval, () => {
       // console.log('yes');
       // alert('yeeeeess')
       put(TimeActions.addTime(new Date().toLocaleString()));
-    }, 1000);
+    }, 1000); */
+
+    // const channel = yield call(countdown);
+
+    const chan = yield call(countdown)
     
-    console.log(runner);
+    try { 
+        while (true) {
+            let seconds = yield take(chan)
+            console.log(`countdown: ${seconds}`)
+        }
+    } finally {
+        if (yield cancelled()) {
+            chan.close()
+            console.log('countdown cancelled')
+        }    
+    }
+    
+    // console.log(runner);
+
+}
+
+function countdown() {
+    return eventChannel(() => {
+        const iv = setInterval(() => {
+
+            const timeActive = yield select(state => state.timeActive);
+
+            if (timeActive === true) {
+
+                yield put(TimeActions.addTime(new Date().toLocaleString()));
+                // emitter(secs)
+
+              } else {
+                // this causes the channel to close
+                emitter(END)
+              }
+
+        }, 1000);
+        // The subscriber must return an unsubscribe function
+        return () => {
+          clearInterval(iv)
+        }
+      }
+    )
 }
 
 export function* addFavoriteRequest(action) {
