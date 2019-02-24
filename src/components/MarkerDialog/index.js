@@ -33,7 +33,7 @@ export default class MarkerDialog extends Component {
         <Dialog.Container visible={this.props.visible}>
           <Dialog.Title>Novo Marcador</Dialog.Title>
           <Dialog.Description>
-              Agora você pode escolher um nome e uma cor para sua novo marcador
+              Agora você pode escolher um nome e uma cor para seu novo marcador
           </Dialog.Description>
           <Dialog.Input 
             style={{ borderBottomWidth: 1 }} 

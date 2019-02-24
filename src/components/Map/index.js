@@ -60,7 +60,6 @@ class Map extends Component {
     longitude: this.state.longitude,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
-
   });
 
   componentDidMount() {
