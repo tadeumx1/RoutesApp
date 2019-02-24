@@ -6,7 +6,7 @@ export const Container = styled.View`
 
     background-color: ${props => props.theme.box.backgroundColor};
     border-radius: ${props => props.theme.box.borderRadius};
-    padding: ${ props => props.theme.box.padding}px;
+    padding: ${props => props.theme.box.padding}px;
     margin-top: 20px;
     margin-right: 10px;
     margin-left: 10px;
@@ -26,6 +26,7 @@ export const Loading = styled.View`
 export const Title = styled.Text`
 
     font-weight: bold;
+    color: ${props => props.theme.colors.dark};
     font-size: 18px;
 
 `;

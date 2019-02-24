@@ -16,6 +16,7 @@ export const Types = {
 const initialState = {
 
     time: null,
+    initialTime: null,
     timeActive: false,
     // errorOnAdd: null,
 
@@ -34,6 +35,7 @@ export default function time(state = initialState, action) {
           return {
 
             ...state,
+            initialTime: action.payload.time,
             timeActive: true
         
           };
@@ -81,6 +83,11 @@ export const Creators = {
     startTime: time => ({
 
         type: Types.START_TIME,
+        payload: {
+
+          time,
+
+        }
 
     }),
 
@@ -89,7 +96,7 @@ export const Creators = {
         type: Types.ADD_TIME,
         payload: {
 
-            time,
+          time,
 
         },
 

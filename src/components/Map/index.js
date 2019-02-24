@@ -46,6 +46,8 @@ class Map extends Component {
 
   };
 
+  intervalID = 0;
+
   calcDistance = newLatLng => {
     const { prevLatLng } = this.state;
     return haversine(prevLatLng, newLatLng) || 0;
@@ -102,6 +104,8 @@ class Map extends Component {
 
       });
 
+      clearInterval(this.intervalID);
+
       Snackbar.show({
         title: 'A rota foi encerrada',
         duration: Snackbar.LENGTH_LONG,
@@ -123,9 +127,11 @@ class Map extends Component {
   
        })
 
-      setInterval(() => {
+      this.props.startTime(new Date().toLocaleString())
+
+      this.intervalID = setInterval(() => {
         this.props.addTime(new Date().toLocaleString())
-      },1000)
+      }, 1000)
 
       await this.getLocation()
   
@@ -261,21 +267,17 @@ class Map extends Component {
 const styles = StyleSheet.create({
 
     container: {
-  
       flex: 1,
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
-  
     },
   
     map: {
-  
       position: 'absolute',
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-  
     },
 
     bubble: {
@@ -306,15 +308,6 @@ const styles = StyleSheet.create({
    
   });
 
-/* const mapStateToProps = state => ({
-
-    time: state.time,
-  
-    // favoritesCount: state.favorites.data.length,
-    // error: state.favorites.errorOnAdd,
-  
-}); */
-  
 const mapDispatchToProps = dispatch => bindActionCreators(TimeActions, dispatch);
 
 export default connect(null, mapDispatchToProps)(Map);
