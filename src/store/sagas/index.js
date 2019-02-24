@@ -30,7 +30,7 @@ export default function* rootSaga() {
         // Com o TakeLatest devemos colocar o type da Action
         // e o Saga que deverá ser executado após aquela Action ser chamada
 
-        takeLatest(TimeTypes.START_TIME, startTimeSaga)
+        // takeLatest(TimeTypes.START_TIME, startTimeSaga)
 
     ]);
 

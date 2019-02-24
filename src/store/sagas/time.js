@@ -1,19 +1,28 @@
-
 import { call, put, select } from 'redux-saga/effects';
 // import api from '../../services/api';
+
+import { eventChannel, END } from 'redux-saga'
 
 import { Creators as TimeActions } from '../ducks/time';
 
 export function* startTimeSaga() {
 
-    const runner = yield call(setInterval, () => {
-      // console.log('yes');
-      // alert('yeeeeess')
-      put(TimeActions.addTime(new Date().toLocaleString()));
+    // const timeStateActive = yield select(state => state.timeActive);
+
+    const runner = yield call(setInterval, function* callback() {
+        console.log('yes');
+        yield put(TimeActions.addTime(new Date().toLocaleString()));
     }, 1000);
-    
+
     console.log(runner);
+
+    // yield put(TimeActions.addTime(DateTime));
+
 }
+    
+
+//////////////////////////////////////////////////////////////////////////
+
 
 export function* addFavoriteRequest(action) {
 

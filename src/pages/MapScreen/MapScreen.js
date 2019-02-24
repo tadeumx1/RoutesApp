@@ -46,10 +46,10 @@ export default class MapScreen extends Component {
 
       await this.setState({ location: true })
 
-      await Snackbar.show({
+      /* await Snackbar.show({
         title: 'Acesso a localização concluído',
         duration: Snackbar.LENGTH_LONG,
-      });
+      }); */
 
     } else {
 

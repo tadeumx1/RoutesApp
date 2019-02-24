@@ -123,19 +123,9 @@ class Map extends Component {
   
        })
 
-      /* setInterval(() => {
-        this.setState({
-          currentTime : new Date().toLocaleString()
-        })
-      },1000) */
-
-      try { 
-        this.props.startTime()
-      } catch(err) {
-
-        alert('erro ' + err)
-
-      }
+      setInterval(() => {
+        this.props.addTime(new Date().toLocaleString())
+      },1000)
 
       await this.getLocation()
   
@@ -256,9 +246,6 @@ class Map extends Component {
             <Text style={styles.bottomBarContent}>
             Rota {parseFloat(this.state.distanceTravelled).toFixed(2)} km
             </Text>
-            <Text>
-            {this.props.time.time}
-            </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.handleMarkerButton} style={[styles.bubble, styles.button]}>
             <Text style={styles.bottomBarContent}>Marker</Text>
@@ -319,15 +306,15 @@ const styles = StyleSheet.create({
    
   });
 
-const mapStateToProps = state => ({
+/* const mapStateToProps = state => ({
 
     time: state.time,
   
     // favoritesCount: state.favorites.data.length,
     // error: state.favorites.errorOnAdd,
   
-});
+}); */
   
 const mapDispatchToProps = dispatch => bindActionCreators(TimeActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Map);
+export default connect(null, mapDispatchToProps)(Map);
