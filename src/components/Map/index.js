@@ -11,6 +11,7 @@ import idx from 'idx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as TimeActions } from '../../store/ducks/time';
+import MarkerDialog from '../MarkerDialog'
 
 import { getPixelSize } from '../../utils';
 
@@ -35,6 +36,7 @@ class Map extends Component {
     selectCoordinates: null,
     distanceTravelled: 0,
     buttonText: '',
+    markerDialog: false,
     active: false,
     markerActive: false,
     // currentTime: null,
@@ -150,7 +152,16 @@ class Map extends Component {
   handleMarkerButton = async () => {
 
     if(this.state.markerActive) {
-      this.setState({ selectCoordinates: null, markerActive: false })
+      // this.setState({ selectCoordinates: null, markerActive: false })
+      this.setState({ markerDialog: true })
+    }
+
+  }
+
+  handleMarkerDialogCancel = (value) => {
+
+    if(value) {
+      this.setState({ selectCoordinates: null, markerDialog: false, markerActive: false })
     }
 
   }
@@ -252,6 +263,9 @@ class Map extends Component {
           )}
 
         </MapView>
+
+        <MarkerDialog visible={this.state.markerDialog} coordinates={this.state.selectCoordinates} 
+          onSelectCancel={this.handleMarkerDialogCancel} />
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this.handleStartButton} style={[styles.bubble, styles.button]}>
