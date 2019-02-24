@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-
+import PropTypes from 'prop-types';
 import Dialog from "react-native-dialog";
 
 export default class MarkerDialog extends Component {
@@ -45,5 +45,13 @@ export default class MarkerDialog extends Component {
       </View>
     );
   }
+
+}
+
+MarkerDialog.propTypes = {
+
+    visible: PropTypes.bool.isRequired,
+    coordinates: PropTypes.objectOf(PropTypes.number),
+    onSelectCancel: PropTypes.func.isRequired,
 
 }
