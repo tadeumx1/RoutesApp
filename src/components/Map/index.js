@@ -107,6 +107,8 @@ class Map extends Component {
       clearInterval(this.intervalID)
       this.props.stopTime()
 
+      this.setState({ active: false })
+
       Snackbar.show({
         title: 'A rota foi encerrada',
         duration: Snackbar.LENGTH_LONG,
@@ -199,7 +201,14 @@ class Map extends Component {
 
   handlePressMap = (e) => {
 
-    this.setState({ selectCoordinates: e.nativeEvent.coordinate, markerActive: true })
+    if(!this.state.active) {
+      this.setState({ 
+        latitude: e.nativeEvent.coordinate.latitude, 
+        longitude: e.nativeEvent.coordinate.longitude,
+        selectCoordinates: e.nativeEvent.coordinate, 
+        markerActive: true 
+      })
+    }
 
   }
 
@@ -234,7 +243,7 @@ class Map extends Component {
           coordinate={this.state.coordinate}
           />
 
-          { this.state.selectCoordinates && (
+          {this.state.selectCoordinates && (
 
             <MapView.Marker
               coordinate={this.state.selectCoordinates}
