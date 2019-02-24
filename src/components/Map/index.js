@@ -104,7 +104,8 @@ class Map extends Component {
 
       });
 
-      clearInterval(this.intervalID);
+      clearInterval(this.intervalID)
+      this.props.stopTime()
 
       Snackbar.show({
         title: 'A rota foi encerrada',

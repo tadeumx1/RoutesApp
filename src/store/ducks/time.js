@@ -54,6 +54,8 @@ export default function time(state = initialState, action) {
           return {
 
             ...state,
+            time: null,
+            initialTime: null,
             timeActive: false,
 
           };
@@ -102,7 +104,7 @@ export const Creators = {
 
     }),
 
-    stopTime: ({
+    stopTime: time => ({
 
         type: Types.STOP_TIME,
 
