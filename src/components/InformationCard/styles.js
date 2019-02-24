@@ -4,15 +4,16 @@ import { Platform } from 'react-native';
 
 export const Container = styled.View`
 
-    flex: 1;
     background-color: ${props => props.theme.box.backgroundColor};
     border-radius: ${props => props.theme.box.borderRadius};
-    padding: 10px;
+    padding: ${ props => props.theme.box.padding}px;
     margin-top: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
     shadow-color: #000;
     shadow-offset: 0 0;
     shadow-opacity: 1;
-    elevation: 1;
+    elevation: 3;
 
 `;
 
@@ -25,7 +26,7 @@ export const Loading = styled.View`
 export const Title = styled.Text`
 
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
 
 `;
 
@@ -47,7 +48,7 @@ export const Info = styled.View`
 export const InfoText = styled.Text`
 
     color: ${props => props.theme.colors.dark};
-    font-size: 12px;
+    font-size: 16px;
     margin-left: 5px;
 
 `;

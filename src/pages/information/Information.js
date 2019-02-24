@@ -1,33 +1,29 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-
+import { Text, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { Creators as TimeActions } from '../../store/ducks/time';
-
+import PropTypes from 'prop-types';
 import { Container, Loading } from './styles'
 import InformationCard from '../../components/InformationCard';
 
 const Information = (props) => (
     <Container>
-        <InformationCard title={'Duração'} iconName={"clock"} infoText={props.time.time} />
-        <InformationCard title={'Duração'} iconName={"clock"} infoText={props.time.time} />
-        <InformationCard title={'Duração'} iconName={"clock"} infoText={props.time.time} />
-        <View>
-            <Text>{props.time.time}</Text>
-        </View>
+
+        <ScrollView>
+
+            <InformationCard title={'Tempo'} iconName={"list"} infoText={props.time.time} />
+            <InformationCard title={'Duração'} iconName={"list"} infoText={props.time.time} />
+            <InformationCard title={'Distância'} iconName={"list"} infoText={props.time.time} />
+            <InformationCard title={'Velocidade'} iconName={"list"} infoText={props.time.time} />
+            <InformationCard title={'Altitude'} iconName={"list"} infoText={props.time.time} />
+
+        </ScrollView>
+
     </Container>
 );
-
-// <Text>{props.time.time}</Text>
-
 
 const mapStateToProps = state => ({
 
     time: state.time,
-  
-    // favoritesCount: state.favorites.data.length,
-    // error: state.favorites.errorOnAdd,
   
 });
 

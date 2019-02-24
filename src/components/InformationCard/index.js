@@ -8,7 +8,9 @@ import { Container, Title, InfoContainer, Info, InfoText } from './styles'
 
 const InformationCard = ({ title, iconName, infoText }) => {
 
-    alert(JSON.stringify(title) + JSON.stringify(iconName) + JSON.stringify(infoText))
+    if(infoText === null) {
+        infoText = 'Sem rotas no momento'
+    }
 
     return (
 
@@ -20,9 +22,8 @@ const InformationCard = ({ title, iconName, infoText }) => {
         
                 <Info>
 
-                    <Icon name="list" size={13} style={styles.infoIcon} />
-                    <Text>EAAAAAAE</Text>
-                    <InfoText>19 minutos</InfoText>
+                    <Icon name={iconName} size={13} style={styles.infoIcon} />
+                    <InfoText>{infoText}</InfoText>
             
                 </Info>
         
