@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {View, Text, StyleSheet, AsyncStorage, Dimensions, TouchableOpacity, Platform, ScrollView} from 'react-native';
 
 import MapView, { Marker, AnimatedRegion, Polyline } from 'react-native-maps';
@@ -150,9 +150,7 @@ class Map extends Component {
   handleMarkerButton = async () => {
 
     if(this.state.markerActive) {
-
       this.setState({ selectCoordinates: null, markerActive: false })
-
     }
 
   }
@@ -213,9 +211,7 @@ class Map extends Component {
   }
 
   componentWillUnmount() {
-
     navigator.geolocation.clearWatch(this.watchID);
-
   }
 
   render() {
