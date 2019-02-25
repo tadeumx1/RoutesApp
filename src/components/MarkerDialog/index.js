@@ -3,6 +3,8 @@ import { View, Text } from "react-native";
 import PropTypes from 'prop-types';
 import Dialog from "react-native-dialog";
 
+import { addMarker } from '../../services/marker'
+
 export default class MarkerDialog extends Component {
 
   state = {
@@ -11,7 +13,24 @@ export default class MarkerDialog extends Component {
 
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
+
+    const newMarker = {
+        name: this.state.markerName,
+        color: "#FFFFFF",
+        location: {
+            type: "Point",
+            coordinates:
+                [
+                    this.props.coordinates.latitude,
+                    this.props.coordinates.longitude
+                ]
+        }
+    }
+
+    await addMarker(newMarker).then(response => {
+        alert('Voltou da API ' + JSON.stringify(response))
+    }).catch((error) => alert('Erro Marker ' + JSON.stringify(error)))
 
     this.props.onSelectCancel(true)
 
@@ -22,6 +41,8 @@ export default class MarkerDialog extends Component {
   }
 
   handleCancel = () => {
+
+    alert(JSON.stringify(this.props.coordinates))
 
     this.props.onSelectCancel(true)
 

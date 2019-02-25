@@ -38,6 +38,11 @@ export default class Welcome extends Component {
         username: '',
         loading: false,
         errorMessage: null,
+
+        user: {
+            email: '',
+            password: '',
+        }
         
     }
 
@@ -58,6 +63,35 @@ export default class Welcome extends Component {
         try {
 
             await this.saveUser(username);
+
+            /* return login(credentials)
+                    .then(user => {
+                        storeUser(user)
+                            .then(user => {
+                                showMessage({
+                                    message: `Bem vindo`,
+                                    description: "Você foi logado com sucesso",
+                                    type: "success",
+                                    icon: "success",
+                                    backgroundColor: '#3cce71',
+                                    floating: true
+                                });
+                            })
+                            .then(() => {
+                                this.props.navigation.navigate('Home');
+                            })
+                            .catch( error => { throw error })
+                    })
+                    .catch(error => {
+                        showMessage({
+                            message: "Erro",
+                            description: error.message,
+                            type: "danger",
+                            icon: "error",
+                            backgroundColor: '#f14e4e',
+                            floating: true
+                        })
+                    }); */
 
             const resetAction = StackActions.reset ({
 
