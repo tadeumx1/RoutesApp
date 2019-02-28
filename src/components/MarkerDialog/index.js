@@ -83,8 +83,8 @@ export default class MarkerDialog extends Component {
 
 MarkerDialog.propTypes = {
 
-    visible: PropTypes.bool.isRequired,
-    coordinates: PropTypes.objectOf(PropTypes.number),
-    onSelectCancel: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  coordinates: PropTypes.objectOf(PropTypes.number),
+  onSelectCancel: PropTypes.func.isRequired,
 
 }

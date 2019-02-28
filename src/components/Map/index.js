@@ -94,7 +94,7 @@ class Map extends Component {
 
       await navigator.geolocation.clearWatch(this.watchID);
 
-      this.mapView.fitToCoordinates((this.state.routeCoordinates), {
+      await this.mapView.fitToCoordinates((this.state.routeCoordinates), {
 
         edgePadding: {
           right: getPixelSize(50),
