@@ -1,7 +1,9 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React, { Component } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import Dialog from "react-native-dialog";
+import Dialog from 'react-native-dialog';
+import Snackbar from 'react-native-snackbar';
+import ColorButton from '../ColorButton'
 
 import { addMarker } from '../../services/marker'
 
@@ -15,7 +17,9 @@ export default class MarkerDialog extends Component {
 
   handleSubmit = async () => {
 
-    const newMarker = {
+    if(this.state.markerName) {
+
+      const newMarker = {
         name: this.state.markerName,
         color: "#FFFFFF",
         location: {
@@ -26,13 +30,19 @@ export default class MarkerDialog extends Component {
                     this.props.coordinates.longitude
                 ]
         }
-    }
+      }
 
-    await addMarker(newMarker).then(response => {
+      await addMarker(newMarker).then(response => {
         alert('Voltou da API ' + JSON.stringify(response))
-    }).catch((error) => alert('Erro Marker ' + JSON.stringify(error)))
+      }).catch((error) => alert('Erro Marker ' + JSON.stringify(error)))
 
-    this.props.onSelectCancel(true)
+      this.props.onSelectCancel(true)
+
+    } else {
+
+      alert('Digite um nome para seu marker')
+
+    }
 
   };
 
@@ -42,7 +52,7 @@ export default class MarkerDialog extends Component {
 
   handleCancel = () => {
 
-    alert(JSON.stringify(this.props.coordinates))
+    // alert(JSON.stringify(this.props.coordinates))
 
     this.props.onSelectCancel(true)
 
@@ -60,6 +70,8 @@ export default class MarkerDialog extends Component {
             style={{ borderBottomWidth: 1 }} 
             label="Nome do marcador" 
             onChangeText={this.handleInput} />
+          <Text style={{ fontSize: 14, marginLeft: 10, marginBottom: 10 }}>Cor do marcador</Text>    
+          <ColorButton />
           <Dialog.Button label="Salvar" onPress={this.handleSubmit} />
           <Dialog.Button label="Cancelar" onPress={this.handleCancel} />
         </Dialog.Container>
