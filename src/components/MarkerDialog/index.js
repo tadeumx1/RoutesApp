@@ -23,7 +23,7 @@ export class MarkerDialog extends Component {
 
       const newMarker = {
         name: this.state.markerName,
-        color: "#FFFFFF",
+        color: this.props.color,
         location: {
             type: "Point",
             coordinates:
