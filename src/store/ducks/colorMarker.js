@@ -3,9 +3,13 @@
 
 export const Types = {
 
-    ADD_COLOR: 'color/ADD_COLOR',
+    ADD_COLOR: 'colorMarker/ADD_COLOR',
 
-    CHANGE_COLOR: 'color/CHANGE_COLOR',
+    CHANGE_COLOR: 'colorMarker/CHANGE_COLOR',
+
+    GET_MARKERS: 'colorMarker/GET_MARKERS',
+
+    CHANGE_MARKERS: 'colorMarker/CHANGE_MARKERS',
 
 };
 
@@ -13,7 +17,9 @@ export const Types = {
 
 const initialState = {
 
-    colorSelected: null,
+    data: [],
+    loading: false,
+    colorSelected: '',
     errorOnAdd: null,
 
 };
@@ -38,7 +44,7 @@ export default function colorMarker(state = initialState, action) {
           return {
 
             ...state,
-            color: action.payload.time,
+            colorSelected: action.payload.color,
         
           };
 
@@ -65,7 +71,7 @@ export const Creators = {
 
     }),
 
-    changeColor: time => ({
+    changeColor: color => ({
 
         type: Types.CHANGE_COLOR,
         payload: {

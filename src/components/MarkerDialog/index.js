@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Dialog from 'react-native-dialog';
+import { connect } from 'react-redux';
 import Snackbar from 'react-native-snackbar';
+import idx from 'idx'
 import ColorButton from '../ColorButton'
 
 import { addMarker } from '../../services/marker'
 
-export default class MarkerDialog extends Component {
+export class MarkerDialog extends Component {
 
   state = {
 
@@ -17,7 +19,7 @@ export default class MarkerDialog extends Component {
 
   handleSubmit = async () => {
 
-    if(this.state.markerName) {
+    if(this.state.markerName && this.props.color) {
 
       const newMarker = {
         name: this.state.markerName,
@@ -31,6 +33,8 @@ export default class MarkerDialog extends Component {
                 ]
         }
       }
+
+      // Verificar caso o usuário tem internet
 
       await addMarker(newMarker).then(response => {
         alert('Voltou da API ' + JSON.stringify(response))
@@ -72,6 +76,7 @@ export default class MarkerDialog extends Component {
             onChangeText={this.handleInput} />
           <Text style={{ fontSize: 14, marginLeft: 10, marginBottom: 10 }}>Cor do marcador</Text>    
           <ColorButton />
+          <Text style={{ fontSize: 14, marginLeft: 10, marginBottom: 10 }}>Cor escolhida {this.props.color}</Text>    
           <Dialog.Button label="Salvar" onPress={this.handleSubmit} />
           <Dialog.Button label="Cancelar" onPress={this.handleCancel} />
         </Dialog.Container>
@@ -80,6 +85,14 @@ export default class MarkerDialog extends Component {
   }
 
 }
+
+const mapStateToProps = state => ({
+
+  color: state.colorMarker.colorSelected
+
+});
+
+export default connect(mapStateToProps, null)(MarkerDialog);
 
 MarkerDialog.propTypes = {
 

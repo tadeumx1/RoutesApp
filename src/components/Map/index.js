@@ -263,8 +263,12 @@ class Map extends Component {
 
         </MapView>
 
+        {this.state.markerDialog && (
+
         <MarkerDialog visible={this.state.markerDialog} coordinates={this.state.selectCoordinates} 
           onSelectCancel={this.handleMarkerDialogCancel} />
+
+        )}
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this.handleStartButton} style={[styles.bubble, styles.button]}>

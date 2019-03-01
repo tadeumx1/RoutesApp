@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 
-export default class ColorButton extends Component {
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Creators as MarkerActions } from '../../store/ducks/colorMarker'
+
+export class ColorButton extends Component {
     
   state = {
 
@@ -11,23 +15,28 @@ export default class ColorButton extends Component {
   }
 
   handleRedColorButton = () => {
-    this.setState({ colorSelected: '#FF0000' })
+    // this.setState({ colorSelected: '#FF0000' })
+    this.props.addColor('#FF0000')
   }
 
   handleGreenColorButton = () => {
-    this.setState({ colorSelected: '#00FF00' })
+    // this.setState({ colorSelected: '#00FF00' })
+    this.props.addColor('#00FF00')
   }
 
   handleBlueColorButton = () => {
-    this.setState({ colorSelected: '#0000FF' })
+    // this.setState({ colorSelected: '#0000FF' })
+    this.props.addColor('#0000FF')
   }
 
   handleMagentaColorButton = () => {
-    this.setState({ colorSelected: '#FF00FF' })
+    // this.setState({ colorSelected: '#FF00FF' })
+    this.props.addColor('#FF00FF')
   }
 
   handleCyanColorButton = () => {
-    this.setState({ colorSelected: '#00FFFF' })
+    // this.setState({ colorSelected: '#00FFFF' })
+    this.props.addColor('00FFFF')
   }
 
   render() {
@@ -45,6 +54,10 @@ export default class ColorButton extends Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => bindActionCreators(MarkerActions, dispatch);
+
+export default connect(null, mapDispatchToProps)(ColorButton)
 
 ColorButton.propTypes = {
 
