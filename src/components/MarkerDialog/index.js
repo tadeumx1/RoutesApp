@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Dialog from 'react-native-dialog';
 import { connect } from 'react-redux';
 import Snackbar from 'react-native-snackbar';
-import idx from 'idx'
 import ColorButton from '../ColorButton'
-
+import { TextOption, DialogInput } from './styles'
 import { addMarker } from '../../services/marker'
 
 export class MarkerDialog extends Component {
@@ -33,18 +32,23 @@ export class MarkerDialog extends Component {
                 ]
         }
       }
-
       // Verificar caso o usuário tem internet
 
       await addMarker(newMarker).then(response => {
-        alert('Voltou da API ' + JSON.stringify(response))
-      }).catch((error) => alert('Erro Marker ' + JSON.stringify(error)))
+        Snackbar.show({
+          title: 'O Marcador foi adicionado com sucesso',
+          duration: Snackbar.LENGTH_LONG
+        });
+      }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error)))
 
       this.props.onSelectCancel(true)
 
     } else {
 
-      alert('Digite um nome para seu marker')
+      Alert.alert(
+        'Alerta',
+        'Digite um nome e escolha uma cor para seu marcador'
+      );
 
     }
 
@@ -55,11 +59,7 @@ export class MarkerDialog extends Component {
   }
 
   handleCancel = () => {
-
-    // alert(JSON.stringify(this.props.coordinates))
-
     this.props.onSelectCancel(true)
-
   };
 
   render() {
@@ -70,13 +70,12 @@ export class MarkerDialog extends Component {
           <Dialog.Description>
               Agora você pode escolher um nome e uma cor para seu novo marcador
           </Dialog.Description>
-          <Dialog.Input 
-            style={{ borderBottomWidth: 1 }} 
+          <DialogInput 
             label="Nome do marcador" 
             onChangeText={this.handleInput} />
-          <Text style={{ fontSize: 14, marginLeft: 10, marginBottom: 10 }}>Cor do marcador</Text>    
+          <TextOption>Cor do marcador</TextOption>    
           <ColorButton />
-          <Text style={{ fontSize: 14, marginLeft: 10, marginBottom: 10 }}>Cor escolhida {this.props.color}</Text>    
+          <TextOption>Cor escolhida {this.props.color}</TextOption>    
           <Dialog.Button label="Salvar" onPress={this.handleSubmit} />
           <Dialog.Button label="Cancelar" onPress={this.handleCancel} />
         </Dialog.Container>
@@ -99,5 +98,6 @@ MarkerDialog.propTypes = {
   visible: PropTypes.bool.isRequired,
   coordinates: PropTypes.objectOf(PropTypes.number),
   onSelectCancel: PropTypes.func.isRequired,
+  color: PropTypes.string.isRequired,
 
 }

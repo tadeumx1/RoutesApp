@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Creators as MarkerActions } from '../../store/ducks/colorMarker'
 
+import { Container, TouchableOpacityColor } from './styles'
+
 export class ColorButton extends Component {
     
   state = {
@@ -42,15 +44,16 @@ export class ColorButton extends Component {
   render() {
     return (
 
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+      <Container>
 
-            <TouchableOpacity onPress={this.handleRedColorButton} style={{ height: 30, width: 30, marginLeft: 5, marginRight: 5, backgroundColor: '#FF0000', borderRadius: 100 }} />
-            <TouchableOpacity onPress={this.handleGreenColorButton} style={{ height: 30, width: 30, marginLeft: 5, marginRight: 5, backgroundColor: '#00FF00', borderRadius: 100 }} />
-            <TouchableOpacity onPress={this.handleBlueColorButton} style={{ height: 30, width: 30, marginLeft: 5, marginRight: 5, backgroundColor: '#0000FF', borderRadius: 100 }} />
-            <TouchableOpacity onPress={this.handleMagentaColorButton} style={{ height: 30, width: 30, marginLeft: 5, marginRight: 5, backgroundColor: '#FF00FF', borderRadius: 100 }} />
-            <TouchableOpacity onPress={this.handleCyanColorButton} style={{ height: 30, width: 30, marginLeft: 5, marginRight: 5, backgroundColor: '#00FFFF', borderRadius: 100 }} />
+        <TouchableOpacityColor backgroundColor='#FF0000' onPress={this.handleRedColorButton} />
+        <TouchableOpacityColor backgroundColor='#00FF00' onPress={this.handleGreenColorButton} />
+        <TouchableOpacityColor backgroundColor='#0000FF' onPress={this.handleBlueColorButton} />
+        <TouchableOpacityColor backgroundColor='#FF00FF' onPress={this.handleMagentaColorButton} />
+        <TouchableOpacityColor backgroundColor='#00FFFF' onPress={this.handleCyanColorButton} />
 
-        </View>
+      </Container>
+      
     )
   }
 }

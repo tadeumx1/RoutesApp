@@ -9,7 +9,11 @@ if(__DEV__) {
       .useReactNative()
       .use(reactotronRedux())
       .use(sagaPlugin())
-      .connect();
+      .connect({
+        server: '10.0.3.2',  // for Genymotion
+        port: 3334,
+        enabled: true
+      })
 
     tron.clear();
     

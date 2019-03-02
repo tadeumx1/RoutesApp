@@ -5,11 +5,13 @@ export const Types = {
 
     ADD_COLOR: 'colorMarker/ADD_COLOR',
 
-    CHANGE_COLOR: 'colorMarker/CHANGE_COLOR',
+    GET_MARKERS: 'colorMarker/ADD_REQUEST',
 
-    GET_MARKERS: 'colorMarker/GET_MARKERS',
+    ADD_SUCCESS: 'colorMaker/ADD_SUCCESS',
 
-    CHANGE_MARKERS: 'colorMarker/CHANGE_MARKERS',
+    ADD_FAILURE: 'colorMarker/ADD_FAILURE',
+
+    CHANGE_MARKER: 'colorMarker/CHANGE_MARKER',
 
 };
 
@@ -71,12 +73,47 @@ export const Creators = {
 
     }),
 
-    changeColor: color => ({
+    getMarkers: markers => ({
 
-        type: Types.CHANGE_COLOR,
+      type: Types.GET_MARKERS,
+      payload: {
+
+        markers,
+
+      }
+
+    }),
+
+
+    addSuccess: markers => ({
+
+      type: Types.ADD_SUCCESS,
+      payload: {
+
+        markers,
+
+      }
+
+    }),
+
+
+    addError: message => ({
+
+      type: Types.ADD_FAILURE,
+      payload: {
+
+        message,
+
+      }
+
+    }),
+
+    changeMarker: marker => ({
+
+        type: Types.CHANGE_MARKER,
         payload: {
 
-          color,
+          marker,
 
         },
 

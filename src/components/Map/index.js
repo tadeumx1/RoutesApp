@@ -94,6 +94,8 @@ class Map extends Component {
 
       await navigator.geolocation.clearWatch(this.watchID);
 
+      await this.setState({ active: false })
+
       await this.mapView.fitToCoordinates((this.state.routeCoordinates), {
 
         edgePadding: {
@@ -107,8 +109,6 @@ class Map extends Component {
 
       clearInterval(this.intervalID)
       this.props.stopTime()
-
-      this.setState({ active: false })
 
       Snackbar.show({
         title: 'A rota foi encerrada',
