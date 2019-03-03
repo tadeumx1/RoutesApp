@@ -11,6 +11,7 @@ import idx from 'idx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as TimeActions } from '../../store/ducks/time';
+import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker';
 import MarkerDialog from '../MarkerDialog'
 
 import { getPixelSize } from '../../utils';
@@ -43,7 +44,7 @@ class Map extends Component {
     prevLatLng: {},
     coordinate: new AnimatedRegion({
      latitude: LATITUDE,
-     longitude: LONGITUDE
+     longitude: LONGITUDE,
     })
 
   };
@@ -74,6 +75,8 @@ class Map extends Component {
       (error) => alert(JSON.stringify(error)),
       { enableHighAccuracy: true, timeout: 2000, maximumAge: 1000 },
     );
+
+    this.props.getMarkers()
 
     // const locationMessage = idx(this.props, (_) => _.message);
 
@@ -154,6 +157,30 @@ class Map extends Component {
       // this.setState({ selectCoordinates: null, markerActive: false })
       this.setState({ markerDialog: true })
     }
+
+  }
+
+  renderMarkersMap = () => {
+
+    const MarkersMap = idx(this.props, _ => _.markers) || []
+    console.tron.log(MarkersMap)
+
+    const makePoint = coordinate => ({ latitude: coordinate[0], longitude: coordinate[1] });
+
+    if(!this.state.active) {
+      return (
+        this.props.markers.map(marker => (
+          <MapView.Marker
+            key={marker._id}
+            coordinate={makePoint(marker.location.coordinates)}
+            title={marker.name}
+            pinColor={marker.color}
+          />
+        ))
+      )
+    }
+
+    return null
 
   }
 
@@ -240,14 +267,21 @@ class Map extends Component {
           onPress={(e) => this.handlePressMap(e)}
           region={this.getMapRegion()}
         > 
+
           <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
 
-          <Marker.Animated
-          ref={marker => {
-            this.marker = marker;
-          }}
-          coordinate={this.state.coordinate}
-          />
+          {this.state.active && (
+          
+            <Marker.Animated
+              ref={marker => {
+                this.marker = marker;
+              }}
+              coordinate={this.state.coordinate}
+            /> 
+
+          )}
+
+          {this.renderMarkersMap()}
 
           {this.state.selectCoordinates && (
 
@@ -331,6 +365,12 @@ const styles = StyleSheet.create({
    
   });
 
-const mapDispatchToProps = dispatch => bindActionCreators(TimeActions, dispatch);
+const mapStateToProps = state => ({
 
-export default connect(null, mapDispatchToProps)(Map);
+  markers: state.colorMarker.data || []
+  
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({ ...TimeActions, ...ColorMarkerActions }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

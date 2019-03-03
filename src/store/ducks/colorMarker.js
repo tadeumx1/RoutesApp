@@ -41,14 +41,42 @@ export default function colorMarker(state = initialState, action) {
         
           };
 
-        case Types.CHANGE_COLOR:
+        case Types.GET_MARKERS:
 
           return {
 
             ...state,
-            colorSelected: action.payload.color,
+           loading: true,
         
           };
+
+        case Types.ADD_SUCCESS:
+
+          return {
+
+            ...state,
+            data: [...state.data, action.payload.markers],
+            loading: false,
+        
+          };  
+
+        case Types.CHANGE_MARKER:
+
+          return {
+
+            ...state,
+        
+          };
+
+        case Types.ADD_FAILURE:
+
+          return {
+
+            ...state,
+           loading: false,
+           errorOnAdd: action.payload.message
+        
+          };  
 
         default:
 
@@ -76,14 +104,8 @@ export const Creators = {
     getMarkers: markers => ({
 
       type: Types.GET_MARKERS,
-      payload: {
-
-        markers,
-
-      }
 
     }),
-
 
     addSuccess: markers => ({
 
@@ -95,7 +117,6 @@ export const Creators = {
       }
 
     }),
-
 
     addError: message => ({
 

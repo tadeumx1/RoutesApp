@@ -38,7 +38,7 @@ export class ColorButton extends Component {
 
   handleCyanColorButton = () => {
     // this.setState({ colorSelected: '#00FFFF' })
-    this.props.addColor('00FFFF')
+    this.props.addColor('#00FFFF')
   }
 
   render() {

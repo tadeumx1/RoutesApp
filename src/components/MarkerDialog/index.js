@@ -32,13 +32,14 @@ export class MarkerDialog extends Component {
                 ]
         }
       }
+      
       // Verificar caso o usuário tem internet
 
       await addMarker(newMarker).then(response => {
-        Snackbar.show({
-          title: 'O Marcador foi adicionado com sucesso',
-          duration: Snackbar.LENGTH_LONG
-        });
+        Alert.alert(
+          'Mensagem',
+          'O marcador foi adicionado com sucesso'
+        );
       }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error)))
 
       this.props.onSelectCancel(true)
@@ -46,7 +47,7 @@ export class MarkerDialog extends Component {
     } else {
 
       Alert.alert(
-        'Alerta',
+        'Mensagem',
         'Digite um nome e escolha uma cor para seu marcador'
       );
 

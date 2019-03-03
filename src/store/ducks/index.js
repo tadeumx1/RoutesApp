@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-import favorites from './favorites';
 import time from './time';
 import colorMarker from './colorMarker';
 
@@ -9,7 +8,6 @@ import colorMarker from './colorMarker';
 
 export default combineReducers({
 
-    favorites,
     time,
     colorMarker,
 
