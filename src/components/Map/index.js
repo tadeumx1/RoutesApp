@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import { Creators as TimeActions } from '../../store/ducks/time';
 import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker';
 import MarkerDialog from '../MarkerDialog'
+import MarkerEditDialog from '../MarkerEditDialog'
 
 import { getPixelSize } from '../../utils';
 
@@ -39,6 +40,7 @@ class Map extends Component {
     buttonText: '',
     markerDialog: false,
     active: false,
+    markerEditDialog: false,
     markerActive: false,
     // currentTime: null,
     prevLatLng: {},
@@ -174,8 +176,9 @@ class Map extends Component {
             key={marker._id}
             coordinate={makePoint(marker.location.coordinates)}
             title={marker.name}
-            pinColor={marker.color}
-          />
+            pinColor={marker.color}>
+            <MapView.Callout onPress={() => this.setState({ markerEditDialog: true }) } />
+          </MapView.Marker>
         ))
       )
     }
@@ -188,6 +191,14 @@ class Map extends Component {
 
     if(value) {
       this.setState({ selectCoordinates: null, markerDialog: false, markerActive: false })
+    }
+
+  }
+
+  handleMarkerEditDialogCancel = (value) => {
+
+    if(value) {
+      this.setState({ markerEditDialog: false })
     }
 
   }
@@ -296,6 +307,13 @@ class Map extends Component {
           )}
 
         </MapView>
+
+        {this.state.markerEditDialog && (
+
+        <MarkerEditDialog visible={this.state.markerEditDialog}
+          onSelectCancel={this.handleMarkerEditDialogCancel} />
+
+        )}
 
         {this.state.markerDialog && (
 
