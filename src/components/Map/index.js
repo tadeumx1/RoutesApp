@@ -41,6 +41,7 @@ class Map extends Component {
     markerDialog: false,
     active: false,
     markerEditDialog: false,
+    markerSelected: null,
     markerActive: false,
     // currentTime: null,
     prevLatLng: {},
@@ -165,7 +166,7 @@ class Map extends Component {
   renderMarkersMap = () => {
 
     const MarkersMap = idx(this.props, _ => _.markers) || []
-    console.tron.log(MarkersMap)
+    // console.tron.log(MarkersMap)
 
     const makePoint = coordinate => ({ latitude: coordinate[0], longitude: coordinate[1] });
 
@@ -177,7 +178,7 @@ class Map extends Component {
             coordinate={makePoint(marker.location.coordinates)}
             title={marker.name}
             pinColor={marker.color}>
-            <MapView.Callout onPress={() => this.setState({ markerEditDialog: true }) } />
+            <MapView.Callout onPress={() => this.setState({ markerEditDialog: true, markerSelected: marker })} />
           </MapView.Marker>
         ))
       )
@@ -310,7 +311,7 @@ class Map extends Component {
 
         {this.state.markerEditDialog && (
 
-        <MarkerEditDialog visible={this.state.markerEditDialog}
+        <MarkerEditDialog visible={this.state.markerEditDialog} marker={this.state.markerSelected}
           onSelectCancel={this.handleMarkerEditDialogCancel} />
 
         )}

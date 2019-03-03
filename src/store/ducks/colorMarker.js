@@ -13,6 +13,8 @@ export const Types = {
 
     CHANGE_MARKER: 'colorMarker/CHANGE_MARKER',
 
+    CHANGE_MARKER_SUCCESS: 'colorMarker/CHANGE_SUCCESS',
+
 };
 
 // Redux State
@@ -22,6 +24,7 @@ const initialState = {
     data: [],
     loading: false,
     colorSelected: '',
+    markerChanged: null,
     errorOnAdd: null,
 
 };
@@ -65,6 +68,16 @@ export default function colorMarker(state = initialState, action) {
           return {
 
             ...state,
+            loading: false
+        
+          };
+
+        case Types.CHANGE_MARKER_SUCCESS:
+
+          return {
+
+            ...state,
+            markerChanged: action.payload.marker
         
           };
 
@@ -126,6 +139,17 @@ export const Creators = {
         message,
 
       }
+
+    }),
+
+    changeMarkerSuccess: marker => ({
+
+      type: Types.CHANGE_MARKER_SUCCESS,
+      payload: {
+
+        marker,
+
+      },
 
     }),
 

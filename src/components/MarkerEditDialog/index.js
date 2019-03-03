@@ -2,20 +2,39 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Dialog from 'react-native-dialog';
-import { connect } from 'react-redux';
 import Snackbar from 'react-native-snackbar';
-import { TextOption, DialogInput, TouchableOpacityOption } from './styles'
+import { TextOption, DialogInput, TouchableOpacityOption, ContainerButton } from './styles'
 import { addMarker } from '../../services/marker'
 
-export class MarkerEditDialog extends Component {
+import MarkerDialog from '../MarkerDialog'
+
+export default class MarkerEditDialog extends Component {
 
   state = {
 
     // markerName: null
+    markerEditDialog: false,
+    markerDeleteDialog: false
 
   };
 
-  handleSubmit = async () => {
+  handleMarkerUpdate = () => {
+
+    this.setState({ markerEditDialog: true })
+    
+  };
+
+  handleMarkerDialogCancel = (value) => {
+
+    if(value) {
+      this.setState({ markerEditDialog: false })
+    }
+
+  }
+
+  handleMarkerDelete = () => {
+
+    console.tron.log(this.props.marker)
 
   };
 
@@ -31,25 +50,21 @@ export class MarkerEditDialog extends Component {
           <Dialog.Description>
               Deseja editar ou excluir seu marcador ?
           </Dialog.Description>
-          <TouchableOpacityOption>
-            <Text>Editar Marcador</Text>
-          </TouchableOpacityOption>
-          <TouchableOpacityOption>
-            <Text>Deletar Marcador</Text>
-          </TouchableOpacityOption>
+          <ContainerButton>
+            <Dialog.Button label="Editar Marcador" onPress={this.handleMarkerUpdate} />
+            <Dialog.Button label="Deletar Marcador" onPress={this.handleMarkerUpdate} />
+          </ContainerButton>
           <Dialog.Button label="Cancelar" onPress={this.handleCancel} />
         </Dialog.Container>
+                  
+        <MarkerDialog visible={this.state.markerEditDialog} marker={this.props.marker}
+          onSelectCancel={this.handleMarkerDialogCancel} />
+
       </View>
     );
   }
 
 }
-
-const mapStateToProps = state => ({
-
-});
-
-export default connect(mapStateToProps, null)(MarkerEditDialog);
 
 MarkerEditDialog.propTypes = {
 

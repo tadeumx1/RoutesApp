@@ -8,7 +8,7 @@ import { all, takeLatest } from 'redux-saga/effects';
 import { Types as TimeTypes } from '../ducks/time';
 import { Types as colorMarkerTypes } from '../ducks/colorMarker';
 import { startTimeSaga } from './time';
-import { addMarkersRequest } from './colorMarker';
+import { addMarkersRequest, addMarkerUpdateRequest } from './colorMarker';
 
 // Função Generator function*
 
@@ -32,7 +32,8 @@ export default function* rootSaga() {
         // Com o TakeLatest devemos colocar o type da Action
         // e o Saga que deverá ser executado após aquela Action ser chamada
 
-        takeLatest(colorMarkerTypes.GET_MARKERS, addMarkersRequest)
+        takeLatest(colorMarkerTypes.GET_MARKERS, addMarkersRequest),
+        takeLatest(colorMarkerTypes.CHANGE_MARKER, addMarkerUpdateRequest)
 
     ]);
 

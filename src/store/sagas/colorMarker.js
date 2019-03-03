@@ -38,3 +38,31 @@ export function* addMarkersRequest(action) {
     }
 
 }
+
+export function* addMarkerUpdateRequest(action) {
+
+    try {
+
+    const response = yield call(api.put, `/marker/${action.payload.marker._id}`);
+
+    if(response) {
+
+        const MarkersMap = idx(response, _ => _.data.markers) || []
+
+        yield all(MarkersMap.map(marker => {
+            return put(ColorMarkerActions.addSuccess(marker))
+        }));
+
+    }
+
+    } catch(err) {
+
+        alert('ERRO ' + err)
+        console.log('ERRO' + err)
+        console.tron.log('ERRO' + err)
+
+        yield put(ColorMarkerActions.addError('Erro ao buscar os marcadores'));
+
+    }
+
+}

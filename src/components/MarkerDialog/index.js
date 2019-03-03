@@ -3,10 +3,15 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Dialog from 'react-native-dialog';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Snackbar from 'react-native-snackbar';
+import idx from 'idx';
 import ColorButton from '../ColorButton'
 import { TextOption, DialogInput } from './styles'
 import { addMarker } from '../../services/marker'
+import { Marker } from 'react-native-maps';
+
+import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker';
 
 export class MarkerDialog extends Component {
 
@@ -17,6 +22,8 @@ export class MarkerDialog extends Component {
   };
 
   handleSubmit = async () => {
+
+    if(!this.props.marker) {
 
     if(this.state.markerName && this.props.color) {
 
@@ -53,7 +60,21 @@ export class MarkerDialog extends Component {
 
     }
 
+    } else {
+
+      this.handleSubmitUpdate()
+
+    }
+
   };
+
+  handleSubmitUpdate = () => {
+
+    console.tron.log(this.props.marker)
+    console.tron.log('eaaae')
+
+    // this.props.changeMarker(this.props.marker)
+  }
 
   handleInput = (value) => {
     this.setState({ markerName: value })
@@ -92,7 +113,9 @@ const mapStateToProps = state => ({
 
 });
 
-export default connect(mapStateToProps, null)(MarkerDialog);
+const mapDispatchToProps = dispatch => bindActionCreators(ColorMarkerActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MarkerDialog);
 
 MarkerDialog.propTypes = {
 
@@ -100,5 +123,6 @@ MarkerDialog.propTypes = {
   coordinates: PropTypes.objectOf(PropTypes.number),
   onSelectCancel: PropTypes.func.isRequired,
   color: PropTypes.string.isRequired,
+  marker: PropTypes.objectOf(Marker),
 
 }
