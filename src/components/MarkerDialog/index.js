@@ -68,12 +68,37 @@ export class MarkerDialog extends Component {
 
   };
 
-  handleSubmitUpdate = () => {
+  handleSubmitUpdate = async () => {
 
-    console.tron.log(this.props.marker)
-    console.tron.log('eaaae')
+    if(this.props.marker) {
 
-    // this.props.changeMarker(this.props.marker)
+      // if(this.state.markerName && this.props.color && this.props.marker)
+
+      const newMarker = {
+        ...this.props.marker,
+        name: !!this.state.markerName ? this.state.markerName : this.props.marker.name,
+        color: !!this.props.color ? this.props.color : this.props.marker.color,
+      }
+
+      await this.props.changeMarker(newMarker)
+
+      this.props.onSelectCancel(true)
+
+    }
+
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if(this.props.markerChanged !== prevProps.markerChanged) {
+
+      Alert.alert(
+        'Mensagem',
+        'O marcador foi atualizado com sucesso'
+      );
+
+    }
+
   }
 
   handleInput = (value) => {
@@ -109,7 +134,9 @@ export class MarkerDialog extends Component {
 
 const mapStateToProps = state => ({
 
-  color: state.colorMarker.colorSelected
+  color: state.colorMarker.colorSelected,
+  markerChanged: state.colorMarker.markerChanged,
+  error: state.colorMarker.errorOnAdd
 
 });
 

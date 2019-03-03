@@ -43,17 +43,13 @@ export function* addMarkerUpdateRequest(action) {
 
     try {
 
-    const response = yield call(api.put, `/marker/${action.payload.marker._id}`);
+        const response = yield call(api.put, `/marker/${action.payload.marker._id}`, action.payload.marker);
 
-    if(response) {
+        if(response.data && response.status === 200) {
 
-        const MarkersMap = idx(response, _ => _.data.markers) || []
-
-        yield all(MarkersMap.map(marker => {
-            return put(ColorMarkerActions.addSuccess(marker))
-        }));
-
-    }
+            yield put(ColorMarkerActions.changeMarkerSuccess(response.data))
+            
+        }
 
     } catch(err) {
 
@@ -61,7 +57,7 @@ export function* addMarkerUpdateRequest(action) {
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 
-        yield put(ColorMarkerActions.addError('Erro ao buscar os marcadores'));
+        yield put(ColorMarkerActions.addError('Erro ao atualizar o marcador'));
 
     }
 
