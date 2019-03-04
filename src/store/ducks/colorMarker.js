@@ -11,6 +11,10 @@ export const Types = {
 
     ADD_FAILURE: 'colorMarker/ADD_FAILURE',
 
+    DELETE_MARKER: 'colorMarker/DELETE_MARKER',
+
+    DELETE_MARKER_SUCCESS: 'colorMarker/DELETE_SUCCESS',
+
     CHANGE_MARKER: 'colorMarker/CHANGE_MARKER',
 
     CHANGE_MARKER_SUCCESS: 'colorMarker/CHANGE_SUCCESS',
@@ -25,6 +29,7 @@ const initialState = {
     loading: false,
     colorSelected: '',
     markerChanged: null,
+    markerDeleted: null,
     errorOnAdd: null,
 
 };
@@ -63,12 +68,31 @@ export default function colorMarker(state = initialState, action) {
         
           };  
 
+        case Types.DELETE_MARKER:
+
+          return {
+
+            ...state,
+            loading: true,
+        
+          }; 
+          
+        case Types.DELETE_MARKER_SUCCESS:
+
+          return {
+
+            ...state,
+            markerDeleted: action.payload.message,
+            loading: false,
+        
+          };   
+
         case Types.CHANGE_MARKER:
 
           return {
 
             ...state,
-            loading: false
+            loading: true
         
           };
 
@@ -77,7 +101,8 @@ export default function colorMarker(state = initialState, action) {
           return {
 
             ...state,
-            markerChanged: action.payload.marker
+            markerChanged: action.payload.marker,
+            loading: false
         
           };
 
@@ -126,6 +151,28 @@ export const Creators = {
       payload: {
 
         markers,
+
+      }
+
+    }),
+
+    deleteMarker: marker => ({
+
+      type: Types.DELETE_MARKER,
+      payload: {
+
+        marker
+
+      }
+
+    }),
+
+    deleteMarkerSuccess: message => ({
+
+      type: Types.DELETE_MARKER_SUCCESS,
+      payload: {
+
+        message
 
       }
 

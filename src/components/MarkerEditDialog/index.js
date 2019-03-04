@@ -7,6 +7,7 @@ import { TextOption, DialogInput, TouchableOpacityOption, ContainerButton } from
 import { addMarker } from '../../services/marker'
 
 import MarkerDialog from '../MarkerDialog'
+import MarkerDeleteDialog from '../MarkerDeleteDialog'
 
 export default class MarkerEditDialog extends Component {
 
@@ -32,9 +33,17 @@ export default class MarkerEditDialog extends Component {
 
   }
 
-  handleMarkerDelete = () => {
+  handleMarkerDeleteDialog = () => {
 
-    console.tron.log(this.props.marker)
+    this.setState({ markerDeleteDialog: true })
+
+  };
+
+  handleMarkerDeleteDialogCancel = (value) => {
+
+    if(value) {
+      this.setState({ markerDeleteDialog: false  })
+    }
 
   };
 
@@ -52,13 +61,16 @@ export default class MarkerEditDialog extends Component {
           </Dialog.Description>
           <ContainerButton>
             <Dialog.Button label="Editar Marcador" onPress={this.handleMarkerUpdate} />
-            <Dialog.Button label="Deletar Marcador" onPress={this.handleMarkerUpdate} />
+            <Dialog.Button label="Deletar Marcador" onPress={this.handleMarkerDeleteDialog} />
           </ContainerButton>
           <Dialog.Button label="Cancelar" onPress={this.handleCancel} />
         </Dialog.Container>
                   
         <MarkerDialog visible={this.state.markerEditDialog} marker={this.props.marker}
           onSelectCancel={this.handleMarkerDialogCancel} />
+
+        <MarkerDeleteDialog visible={this.state.markerDeleteDialog} marker={this.props.marker}
+          onSelectCancel={this.handleMarkerDeleteDialogCancel} />
 
       </View>
     );
