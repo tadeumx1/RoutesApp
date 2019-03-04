@@ -49,6 +49,8 @@ export class MarkerDialog extends Component {
         );
       }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error)))
 
+      this.props.addMarkerUpdate(true)
+
       this.props.onSelectCancel(true)
 
     } else {
@@ -81,6 +83,8 @@ export class MarkerDialog extends Component {
       }
 
       await this.props.changeMarker(newMarker)
+
+      this.props.addMarkerUpdate(true)
 
       this.props.onSelectCancel(true)
 

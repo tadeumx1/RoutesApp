@@ -69,12 +69,8 @@ export function* addMarkerDeleteRequest(action) {
 
         const response = yield call(api.delete, `/marker/${action.payload.marker._id}`, action.payload.marker);
 
-        console.tron.log('RESPONSE')
-        console.tron.log(response)
-
         if (response.status === 200) {
 
-            console.tron.log('PASSOU NO RESPONSE')
             yield put(ColorMarkerActions.deleteMarkerSuccess(true))
             
         }

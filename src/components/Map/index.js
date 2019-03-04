@@ -163,9 +163,21 @@ class Map extends Component {
 
   }
 
+  componentDidUpdate(prevProps) {
+
+    if(this.props.markerUpdate === true) {
+
+      this.props.getMarkers()
+
+      this.props.addMarkerUpdate(false)
+
+    }
+
+  }
+
   renderMarkersMap = () => {
 
-    const MarkersMap = idx(this.props, _ => _.markers) || []
+    // const MarkersMap = idx(this.props, _ => _.markers) || []
     // console.tron.log(MarkersMap)
 
     const makePoint = coordinate => ({ latitude: coordinate[0], longitude: coordinate[1] });
@@ -386,6 +398,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 
+  markerUpdate: state.colorMarker.markerUpdate,
   markers: state.colorMarker.data || []
   
 });

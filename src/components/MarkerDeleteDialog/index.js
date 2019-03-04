@@ -11,8 +11,13 @@ import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker'
 export class MarkerDeleteDialog extends Component {
 
   handleMarkerDelete = () => {
+
     this.props.deleteMarker(this.props.marker)
+
+    this.props.addMarkerUpdate(true)
+
     this.props.onSelectCancel(true)
+    
   };
 
   componentDidUpdate(prevProps) {
