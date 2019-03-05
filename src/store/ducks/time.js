@@ -17,6 +17,7 @@ const initialState = {
 
     time: null,
     initialTime: null,
+    durationTime: null,
     timeActive: false,
     // errorOnAdd: null,
 
@@ -56,6 +57,7 @@ export default function time(state = initialState, action) {
             ...state,
             time: null,
             initialTime: null,
+            durationTime: null,
             timeActive: false,
 
           };

@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as TimeActions } from '../../store/ducks/time';
 import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker';
+import { Creators as RoutesActions } from '../../store/ducks/routes'
 import MarkerDialog from '../MarkerDialog'
 import MarkerEditDialog from '../MarkerEditDialog'
 
@@ -251,6 +252,8 @@ class Map extends Component {
 
         // const speed = this.calcDistance(newCoordinate) /
 
+        this.props.addDistance(this.state.distanceTravelled)
+
        },
        error => console.log(error),
        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1 }
@@ -336,14 +339,19 @@ class Map extends Component {
         )}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this.handleStartButton} style={[styles.bubble, styles.button]}>
-            <Text style={styles.bottomBarContent}>
-            Rota {parseFloat(this.state.distanceTravelled).toFixed(2)} km
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.handleMarkerButton} style={[styles.bubble, styles.button]}>
-            <Text style={styles.bottomBarContent}>Marker</Text>
-          </TouchableOpacity>
+        
+          {!this.state.markerActive && (
+            <TouchableOpacity onPress={this.handleStartButton} style={styles.buttonRoute}>
+              <View style={styles.buttonRouteCenter} />
+            </TouchableOpacity>
+          )}  
+
+          {this.state.markerActive && (
+            <TouchableOpacity onPress={this.handleMarkerButton} style={[styles.bubble, styles.button]}>
+              <Text style={styles.bottomBarContent}>Marker</Text>
+            </TouchableOpacity>
+          )}
+          
         </View>
 
       </View>
@@ -388,6 +396,24 @@ const styles = StyleSheet.create({
       marginHorizontal: 10
     },
 
+    buttonRoute: {
+      flex: 1,
+      backgroundColor: "rgba(255,255,255,0.7)",
+      paddingHorizontal: 18,
+      paddingVertical: 20,
+      marginHorizontal: 158,
+      borderRadius: 200,
+      width: 80,
+      alignItems: "center",
+    },
+
+    buttonRouteCenter: {
+      backgroundColor: '#FF0000', 
+      height: 19, 
+      width: 19, 
+      borderRadius: 100
+    },
+
     buttonContainer: {
       flexDirection: "row",
       marginVertical: 20,
@@ -403,6 +429,6 @@ const mapStateToProps = state => ({
   
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ ...TimeActions, ...ColorMarkerActions }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ ...TimeActions, ...ColorMarkerActions, ...RoutesActions }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

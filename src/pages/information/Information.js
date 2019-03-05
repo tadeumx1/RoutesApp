@@ -11,7 +11,7 @@ const Information = (props) => (
 
             <InformationCard title={'Tempo'} iconName={'list'} infoText={props.time.time} />
             <InformationCard title={'Duração'} iconName={'list'} infoText={props.time.time} />
-            <InformationCard title={'Distância'} iconName={'list'} infoText={props.time.time} />
+            <InformationCard title={'Distância'} iconName={'list'} infoText={parseFloat(props.distance).toFixed(2) + ' km'} />
             <InformationCard title={'Velocidade'} iconName={'list'} infoText={props.time.time} />
             <InformationCard title={'Altitude'} iconName={'list'} infoText={'Em breve'} />
 
@@ -22,6 +22,7 @@ const Information = (props) => (
 const mapStateToProps = state => ({
 
     time: state.time,
+    distance: state.routes.distance
   
 });
 
