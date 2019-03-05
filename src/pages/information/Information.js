@@ -13,7 +13,7 @@ const Information = (props) => (
             <InformationCard title={'Duração'} iconName={'list'} infoText={props.time.time} />
             <InformationCard title={'Distância'} iconName={'list'} infoText={props.time.time} />
             <InformationCard title={'Velocidade'} iconName={'list'} infoText={props.time.time} />
-            <InformationCard title={'Altitude'} iconName={'list'} infoText={props.time.time} />
+            <InformationCard title={'Altitude'} iconName={'list'} infoText={'Em breve'} />
 
         </ScrollView>
     </Container>
