@@ -103,16 +103,27 @@ class Map extends Component {
 
       await this.setState({ active: false })
 
-      await this.mapView.fitToCoordinates((this.state.routeCoordinates), {
+      if(this.state.routeCoordinates.length > 1) {
 
-        edgePadding: {
-          right: getPixelSize(50),
-          left: getPixelSize(50),
-          top: getPixelSize(50),
-          bottom: getPixelSize(50),
-        }
+        await this.mapView.fitToCoordinates((this.state.routeCoordinates), {
 
-      });
+          edgePadding: {
+            right: getPixelSize(50),
+            left: getPixelSize(50),
+            top: getPixelSize(50),
+            bottom: getPixelSize(50),
+          }
+
+        });
+
+      } else if (this.state.routeCoordinates.length === 0) {
+
+        Snackbar.show({
+          title: 'Não foi identificada a mudança de local, reinicie a rota',
+          duration: Snackbar.LENGTH_LONG,
+        });
+
+      }
 
       clearInterval(this.intervalID)
       this.props.stopTime()
