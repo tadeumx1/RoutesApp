@@ -9,6 +9,10 @@ const InformationCard = ({ title, iconName, infoText }) => {
     infoText = "Sem rotas no momento";
   }
 
+  if(infoText === 'NaN km') {
+    infoText = '0.00 km'
+  }
+
   return (
     <Container>
       <Title>{title}</Title>

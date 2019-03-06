@@ -8,6 +8,7 @@ import { all, takeLatest } from 'redux-saga/effects';
 import { Types as TimeTypes } from '../ducks/time';
 import { Types as colorMarkerTypes } from '../ducks/colorMarker';
 import { startTimeSaga } from './time';
+import { addTimeDuration } from './time';
 import { addMarkersRequest, addMarkerUpdateRequest, addMarkerDeleteRequest } from './colorMarker';
 
 // Função Generator function*
@@ -34,7 +35,8 @@ export default function* rootSaga() {
 
         takeLatest(colorMarkerTypes.GET_MARKERS, addMarkersRequest),
         takeLatest(colorMarkerTypes.DELETE_MARKER, addMarkerDeleteRequest),
-        takeLatest(colorMarkerTypes.CHANGE_MARKER, addMarkerUpdateRequest)
+        takeLatest(colorMarkerTypes.CHANGE_MARKER, addMarkerUpdateRequest),
+        takeLatest(TimeTypes.ADD_TIME_DURATION, addTimeDuration)
 
     ]);
 

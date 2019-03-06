@@ -5,24 +5,39 @@ import PropTypes from 'prop-types';
 import { Container, Loading } from './styles'
 import InformationCard from '../../components/InformationCard';
 
-const Information = (props) => (
-    <Container>
-        <ScrollView>
+const Information = (props) => {
 
-            <InformationCard title={'Tempo'} iconName={'list'} infoText={props.time.time} />
-            <InformationCard title={'Duração'} iconName={'list'} infoText={props.time.time} />
-            <InformationCard title={'Distância'} iconName={'list'} infoText={parseFloat(props.distance).toFixed(2) + ' km'} />
-            <InformationCard title={'Velocidade'} iconName={'list'} infoText={props.time.time} />
-            <InformationCard title={'Altitude'} iconName={'list'} infoText={'Em breve'} />
+    let time = null
 
-        </ScrollView>
-    </Container>
-);
+    if(props.time.time) {
+        time = new Date(props.time.time);
+        // time.toString()
+    } else {
+        time = 'Sem rotas no momento'
+    }
+
+    return (
+
+        <Container>
+            <ScrollView>
+
+                <InformationCard title={'Tempo'} iconName={'list'} infoText={time.toLocaleString()} />
+                <InformationCard title={'Duração'} iconName={'list'} infoText={props.timeDuration} />
+                <InformationCard title={'Distância'} iconName={'list'} infoText={parseFloat(props.distance).toFixed(2) + ' km'} />
+                <InformationCard title={'Velocidade'} iconName={'list'} infoText={'Em breve a velocidade vai ser calculada'} />
+                <InformationCard title={'Altitude'} iconName={'list'} infoText={'Em breve'} />
+
+            </ScrollView>
+        </Container>
+
+    )
+};
 
 const mapStateToProps = state => ({
 
     time: state.time,
-    distance: state.routes.distance
+    distance: state.routes.distance,
+    timeDuration: state.time.durationTime
   
 });
 

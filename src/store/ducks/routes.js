@@ -245,7 +245,7 @@ export const Creators = {
 
     stopRoute: route => ({
 
-       type: Types.ADD_ROUTE,
+       type: Types.STOP_ROUTE
      
     }),
 

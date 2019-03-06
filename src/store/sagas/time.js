@@ -1,85 +1,46 @@
-import { call, put, select } from 'redux-saga/effects';
-// import api from '../../services/api';
+import { call, put, all, select } from 'redux-saga/effects'
+import api from '../../services/api'
 
-import { eventChannel, END } from 'redux-saga'
+import idx from 'idx'
 
 import { Creators as TimeActions } from '../ducks/time';
 
-export function* startTimeSaga() {
-
-    // const timeStateActive = yield select(state => state.timeActive);
-
-    const runner = yield call(setInterval, function* callback() {
-        console.log('yes');
-        yield put(TimeActions.addTime(new Date().toLocaleString()));
-    }, 1000);
-
-    console.log(runner);
-
-    // yield put(TimeActions.addTime(DateTime));
-
-}
-    
-
-//////////////////////////////////////////////////////////////////////////
-
-
-export function* addFavoriteRequest(action) {
+export function* addTimeDuration(action) {
 
     try {
 
-    // Para chamar uma Promise precisamos usar a função chamada call do Redux Saga
-
-    // Não precisamos chamar a função api.get e sim só declarar e passar o parâmetro com
-    // o nome do repositório
-
+        const time = yield select(state => state.time.time);
     
-    const response = yield call(api.get, `repos/${action.payload.repoName}`);
+        const initialTime = yield select(state => state.time.initialTime);
 
-    // A função select serve para bsucar alguma informação que já passou pelo reducer
-    // e está no estado
+        const differenceTime = time - initialTime; 
 
-    // Buscando o Array de Favorites do Reducer
+        function msToTime(duration) {
 
-    const favorites = yield select(state => state.favorites.data);
+            let milliseconds = parseInt((duration % 1000) / 100),
+              seconds = parseInt((duration / 1000) % 60),
+              minutes = parseInt((duration / (1000 * 60)) % 60),
+              hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+          
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+          
+            // return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 
-    if (favorites.find(favorite => favorite.id === response.data.id)) {
+            return hours + ":" + minutes + ":" + seconds;
 
-        yield put(FavoriteActions.addFavoriteError('Repositório duplicado'));
+        }
 
-    } else {
+        const timeNow = msToTime(differenceTime).toString()
 
-        yield put(FavoriteActions.addFavoriteSuccess(response.data));
-
-    }
-
-    console.log(response)
-
-    // Agora precisamos chamar o reducer para salvar esse repositório no estado
-
-    // Para isso vamos usar o método put que é utilizado para enviar dados para o Reducer
-
-    // Deve colocar o yield quanto for utilizar qualquer função do Redux shapeMargin: 
-
-    // Chamando a Action e passando o repositório
-
-    // yield put(addFavoriteSuccess(response.data));
+        yield put(TimeActions.addTimeDurationSuccess(timeNow))
 
     } catch(err) {
 
         alert('ERRO ' + err)
         console.log('ERRO' + err)
-
-        try {
-
-        yield put(FavoriteActions.addFavoriteError('Repositório não existe'));
-
-        } catch (err) {
-
-            alert('ERRO NO REDUCER ' + err)
-
-        }
-
+        console.tron.log('ERRO' + err)
 
     }
 

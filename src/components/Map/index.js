@@ -116,6 +116,7 @@ class Map extends Component {
 
       clearInterval(this.intervalID)
       this.props.stopTime()
+      this.props.stopRoute()
 
       Snackbar.show({
         title: 'A rota foi encerrada',
@@ -138,10 +139,11 @@ class Map extends Component {
   
        })
 
-      this.props.startTime(new Date().toLocaleString())
+      this.props.startTime(Date.now())
 
       this.intervalID = setInterval(() => {
-        this.props.addTime(new Date().toLocaleString())
+        this.props.addTime(Date.now())
+        this.props.addTimeDuration()
       }, 1000)
 
       await this.getLocation()
@@ -340,11 +342,17 @@ class Map extends Component {
 
         <View style={styles.buttonContainer}>
         
-          {!this.state.markerActive && (
+          {!this.state.markerActive && !this.state.active ? (
             <TouchableOpacity onPress={this.handleStartButton} style={styles.buttonRoute}>
               <View style={styles.buttonRouteCenter} />
             </TouchableOpacity>
-          )}  
+          ): null}
+
+          {!this.state.markerActive && this.state.active ? (
+            <TouchableOpacity onPress={this.handleStartButton} style={styles.buttonRoute}>
+              <View style={styles.buttonRouteStop} />
+            </TouchableOpacity>
+          ): null}    
 
           {this.state.markerActive && (
             <TouchableOpacity onPress={this.handleMarkerButton} style={[styles.bubble, styles.button]}>
@@ -412,6 +420,12 @@ const styles = StyleSheet.create({
       height: 19, 
       width: 19, 
       borderRadius: 100
+    },
+
+    buttonRouteStop: {
+      backgroundColor: '#000000', 
+      height: 17, 
+      width: 17, 
     },
 
     buttonContainer: {
