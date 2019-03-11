@@ -326,7 +326,9 @@ class Map extends Component {
           {this.state.selectCoordinates && (
 
             <MapView.Marker
+              draggable
               coordinate={this.state.selectCoordinates}
+              onDragEnd={this.handleMarkerButton}
             >
             <MapView.Callout onPress={() => {}}>
               <Text>Coodernadas</Text>
