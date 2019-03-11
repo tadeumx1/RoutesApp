@@ -230,6 +230,21 @@ class Map extends Component {
 
   }
 
+  handleMarkerOnDragEnd = (e) => {
+
+    console.tron.log(e)
+
+    this.setState({ 
+      latitude: e.nativeEvent.coordinate.latitude, 
+      longitude: e.nativeEvent.coordinate.longitude,
+      selectCoordinates: e.nativeEvent.coordinate, 
+      markerActive: true 
+    })
+
+    this.handleMarkerButton()
+
+  }
+
   getLocation = async () => {
 
     this.watchID = navigator.geolocation.watchPosition(
@@ -328,7 +343,7 @@ class Map extends Component {
             <MapView.Marker
               draggable
               coordinate={this.state.selectCoordinates}
-              onDragEnd={this.handleMarkerButton}
+              onDragEnd={this.handleMarkerOnDragEnd}
             >
             <MapView.Callout onPress={() => {}}>
               <Text>Coodernadas</Text>
