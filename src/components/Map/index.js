@@ -126,8 +126,11 @@ class Map extends Component {
       }
 
       clearInterval(this.intervalID)
-      this.props.stopTime()
-      this.props.stopRoute()
+      // this.props.stopTime()
+      // this.props.stopRoute()
+
+      // Chamar o stopTime e stopRoute que vão limpar os valores dentro do Dialog
+      // Pois esses valores vão ser utilizados na hora de salvar a rota
 
       Snackbar.show({
         title: 'A rota foi encerrada',
@@ -232,8 +235,6 @@ class Map extends Component {
 
   handleMarkerOnDragEnd = (e) => {
 
-    console.tron.log(e)
-
     this.setState({ 
       latitude: e.nativeEvent.coordinate.latitude, 
       longitude: e.nativeEvent.coordinate.longitude,
@@ -281,6 +282,7 @@ class Map extends Component {
         // const speed = this.calcDistance(newCoordinate) /
 
         this.props.addDistance(this.state.distanceTravelled)
+        this.props.addAltitude(position.coords.altitude)
 
        },
        error => console.log(error),

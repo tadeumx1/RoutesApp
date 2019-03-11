@@ -13,6 +13,10 @@ const InformationCard = ({ title, iconName, infoText }) => {
     infoText = '0.00 km'
   }
 
+  if(infoText === 'NaN') {
+    infoText = '0.00'
+  }
+
   return (
     <Container>
       <Title>{title}</Title>

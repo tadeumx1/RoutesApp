@@ -21,6 +21,8 @@ export const Types = {
 
     ADD_ROUTE_UPDATE: 'routes/ADD_ROUTE_UPDATE',
 
+    ADD_ALTITUDE: 'routes/ADD_ALTITUDE',
+
     DELETE_ROUTE: 'routes/DELETE_ROUTE',
 
     DELETE_ROUTE_SUCCESS: 'routes/DELETE_SUCCESS',
@@ -40,16 +42,18 @@ const initialState = {
     routeSelected: '',
     distance: null,
     speed: null,
+    altitude: null,
     routeAdd: null,
     routeChanged: null,
     routeDeleted: null,
+    routeUpdate: null,
     errorOnAdd: null,
 
 };
 
 // Reducers
 
-export default function colorMarker(state = initialState, action) {
+export default function routes(state = initialState, action) {
 
     switch(action.type) {
 
@@ -90,6 +94,24 @@ export default function colorMarker(state = initialState, action) {
             loading: false,
         
           };
+
+        case Types.ADD_MARKER_UPDATE:
+
+          return {
+
+            ...state,
+            routeUpdate: action.payload.information
+        
+          };
+          
+          case Types.ADD_ALTITUDE:
+
+          return {
+
+            ...state,
+            altitude: action.payload.altitude
+        
+          };    
 
         case Types.ADD_DISTANCE:
 
@@ -182,7 +204,7 @@ export default function colorMarker(state = initialState, action) {
 
 export const Creators = {
 
-    getRoutes: markers => ({
+    getRoutes: () => ({
 
       type: Types.GET_ROUTES,
 
@@ -221,6 +243,28 @@ export const Creators = {
 
     }),
 
+    addRouteUpdate: information => ({
+
+      type: Types.ADD_ROUTE_UPDATE,
+      payload: {
+
+        information
+
+      }
+
+    }),
+
+    addAltitude: altitude => ({
+
+      type: Types.ADD_ALTITUDE,
+      payload: {
+
+        altitude
+
+      }
+
+    }),
+
     addDistance: distance => ({
 
       type: Types.ADD_DISTANCE,
@@ -243,7 +287,7 @@ export const Creators = {
     
     }),
 
-    stopRoute: route => ({
+    stopRoute: () => ({
 
        type: Types.STOP_ROUTE
      

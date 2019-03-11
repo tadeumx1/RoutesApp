@@ -25,7 +25,7 @@ const Information = (props) => {
                 <InformationCard title={'Duração'} iconName={'list'} infoText={props.timeDuration} />
                 <InformationCard title={'Distância'} iconName={'list'} infoText={parseFloat(props.distance).toFixed(2) + ' km'} />
                 <InformationCard title={'Velocidade'} iconName={'list'} infoText={'Em breve a velocidade vai ser calculada'} />
-                <InformationCard title={'Altitude'} iconName={'list'} infoText={'Em breve'} />
+                <InformationCard title={'Altitude'} iconName={'list'} infoText={parseFloat(props.altitude).toFixed(2)} />
 
             </ScrollView>
         </Container>
@@ -37,7 +37,8 @@ const mapStateToProps = state => ({
 
     time: state.time,
     distance: state.routes.distance,
-    timeDuration: state.time.durationTime
+    timeDuration: state.time.durationTime,
+    altitude: state.routes.altitude
   
 });
 
