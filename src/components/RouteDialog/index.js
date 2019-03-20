@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Snackbar from 'react-native-snackbar';
 import idx from 'idx';
-import { TextOption, CheckNext, DialogInput } from './styles'
+import { TextOption, CheckNext, PickerType, DialogInput } from './styles'
 import CheckBox from 'react-native-check-box'
 
 import { Creators as TimeActions } from '../../store/ducks/time';
@@ -27,7 +27,7 @@ export class RouteDialog extends Component {
 
     if(!this.props.route) {
 
-    if(this.state.routeName && this.props.color) {
+    if(this.state.routeName && this.state.routeType && this.state.routeDescription) {
 
       const newMarker = {
         name: this.state.markerName,
@@ -59,7 +59,7 @@ export class RouteDialog extends Component {
 
       Alert.alert(
         'Mensagem',
-        'Digite um nome e escolha uma cor para seu marcador'
+        'Digite um nome e descriçao além, de escolher um tipo para a rota'
       );
 
     }
@@ -107,6 +107,12 @@ export class RouteDialog extends Component {
 
   }
 
+  handleCheckBox = () => {
+    this.setState({
+      saveRouteNextTime: !this.state.saveRouteNextTime
+    })
+  }
+
   handleInput = (value) => {
     this.setState({ markerName: value })
   }
@@ -130,9 +136,8 @@ export class RouteDialog extends Component {
             label="Descrição da rota" 
             onChangeText={this.handleInput} />
           <TextOption>Tipo da rota</TextOption>    
-          <Picker
+          <PickerType
             selectedValue={this.state.routeType}
-            style={{height: 50, marginLeft: 10, width: 100 }}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({routeType: itemValue})
             }>
@@ -147,13 +152,9 @@ export class RouteDialog extends Component {
             <Picker.Item label="Car" value="car" />
             <Picker.Item label="Boat" value="boat" />
             <Picker.Item label="Flight" value="flight" />
-          </Picker>
+          </PickerType>
           <CheckNext
-            onClick={()=> {
-              this.setState({
-                saveRouteNextTime: !this.state.saveRouteNextTime
-              })
-            }}
+            onClick={this.handleCheckBox}
             isChecked={this.state.saveRouteNextTime}
             leftText={"Salvar automático da próxima vez"}
           />
@@ -178,11 +179,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({ ...RouteActions, ...
 
 export default connect(mapStateToProps, mapDispatchToProps)(RouteDialog);
 
-RouteDialog.propTypes = {
+/* RouteDialog.propTypes = {
 
   visible: PropTypes.bool.isRequired,
   coordinates: PropTypes.objectOf(PropTypes.number),
   onSelectCancel: PropTypes.func.isRequired,
-  color: PropTypes.string.isRequired,
 
-}
+} */

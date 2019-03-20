@@ -103,7 +103,7 @@ class Map extends Component {
 
       await navigator.geolocation.clearWatch(this.watchID);
 
-      await this.setState({ active: false })
+      // await this.setState({ active: false })
 
       if(this.state.routeCoordinates.length > 1) {
 
@@ -118,7 +118,10 @@ class Map extends Component {
 
         });
 
-        this.setState({ routeDialog: true})
+        setTimeout(() => {
+          this.setState({ routeDialog: true })
+          this.setState({ active: false })
+        }, 1900)
 
       } else if (this.state.routeCoordinates.length === 0) {
 

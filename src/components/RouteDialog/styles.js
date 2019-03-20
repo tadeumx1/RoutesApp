@@ -17,6 +17,14 @@ export const DialogInput = styled(Dialog.Input)`
 
 `;
 
+export const PickerType = styled.Picker`
+
+    height: 50px;
+    margin-left: 10px;
+    width: 130px;
+
+`;
+
 export const CheckNext = styled(CheckBox)`
 
     padding: 7px;
