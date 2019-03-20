@@ -15,6 +15,7 @@ import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker';
 import { Creators as RoutesActions } from '../../store/ducks/routes'
 import MarkerDialog from '../MarkerDialog'
 import MarkerEditDialog from '../MarkerEditDialog'
+import RouteDialog from '../RouteDialog'
 
 import { getPixelSize } from '../../utils';
 
@@ -43,6 +44,7 @@ class Map extends Component {
     active: false,
     markerEditDialog: false,
     markerSelected: null,
+    routeDialog: null,
     markerActive: false,
     // currentTime: null,
     prevLatLng: {},
@@ -115,6 +117,8 @@ class Map extends Component {
           }
 
         });
+
+        this.setState({ routeDialog: true})
 
       } else if (this.state.routeCoordinates.length === 0) {
 
@@ -221,6 +225,14 @@ class Map extends Component {
 
     if(value) {
       this.setState({ selectCoordinates: null, markerDialog: false, markerActive: false })
+    }
+
+  }
+
+  handleRouteDialogCancel = (value) => {
+
+    if(value) {
+      this.setState({ routeDialog: false })
     }
 
   }
@@ -360,6 +372,13 @@ class Map extends Component {
 
         <MarkerEditDialog visible={this.state.markerEditDialog} marker={this.state.markerSelected}
           onSelectCancel={this.handleMarkerEditDialogCancel} />
+
+        )}
+
+        {this.state.routeDialog && (
+
+          <RouteDialog visible={this.state.routeDialog} coordinates={this.state.routeCoordinates} 
+            onSelectCancel={this.handleRouteDialogCancel} />
 
         )}
 

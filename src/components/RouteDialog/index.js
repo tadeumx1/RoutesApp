@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Picker, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Dialog from 'react-native-dialog';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Snackbar from 'react-native-snackbar';
 import idx from 'idx';
-import ColorButton from '../ColorButton'
-import { TextOption, DialogInput } from './styles'
-import { Marker } from 'react-native-maps';
+import { TextOption, CheckNext, DialogInput } from './styles'
+import CheckBox from 'react-native-check-box'
 
 import { Creators as TimeActions } from '../../store/ducks/time';
 import { Creators as RouteActions } from '../../store/ducks/routes';
@@ -17,7 +16,8 @@ export class RouteDialog extends Component {
 
   state = {
 
-    routeName: null,
+    routeName: '',
+    saveRouteNextTime: false,
     routeDescription: null,
     routeType: null
 
@@ -132,7 +132,7 @@ export class RouteDialog extends Component {
           <TextOption>Tipo da rota</TextOption>    
           <Picker
             selectedValue={this.state.routeType}
-            style={{height: 50, width: 100}}
+            style={{height: 50, marginLeft: 10, width: 100 }}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({routeType: itemValue})
             }>
@@ -148,9 +148,17 @@ export class RouteDialog extends Component {
             <Picker.Item label="Boat" value="boat" />
             <Picker.Item label="Flight" value="flight" />
           </Picker>
-          <ColorButton />
-          <TextOption>Cor escolhida {this.props.color}</TextOption>    
+          <CheckNext
+            onClick={()=> {
+              this.setState({
+                saveRouteNextTime: !this.state.saveRouteNextTime
+              })
+            }}
+            isChecked={this.state.saveRouteNextTime}
+            leftText={"Salvar automático da próxima vez"}
+          />
           <Dialog.Button label="Salvar" onPress={this.handleSubmit} />
+          <Dialog.Button label="Voltar" onPress={this.handleCancel} />
           <Dialog.Button label="Cancelar" onPress={this.handleCancel} />
         </Dialog.Container>
       </View>
@@ -161,8 +169,7 @@ export class RouteDialog extends Component {
 
 const mapStateToProps = state => ({
 
-  color: state.colorMarker.colorSelected,
-  markerChanged: state.colorMarker.markerChanged,
+  routeChanged: state.routes.routeChanged,
   error: state.colorMarker.errorOnAdd
 
 });
@@ -177,6 +184,5 @@ RouteDialog.propTypes = {
   coordinates: PropTypes.objectOf(PropTypes.number),
   onSelectCancel: PropTypes.func.isRequired,
   color: PropTypes.string.isRequired,
-  marker: PropTypes.objectOf(Marker),
 
 }

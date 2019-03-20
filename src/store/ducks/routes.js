@@ -139,6 +139,7 @@ export default function routes(state = initialState, action) {
 
             ...state,
             speed: null,
+            altitude: null,
             distance: null,
             loading: false,
         
