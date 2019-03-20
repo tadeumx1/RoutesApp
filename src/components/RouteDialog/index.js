@@ -119,14 +119,35 @@ export class RouteDialog extends Component {
     return (
       <View>
         <Dialog.Container visible={this.props.visible}>
-          <Dialog.Title>Novo Marcador</Dialog.Title>
+          <Dialog.Title>Novo Rota</Dialog.Title>
           <Dialog.Description>
-              Agora você pode escolher um nome e uma cor para seu novo marcador
+              Agora você pode escolher um nome, tipo e descrição para seu marcador
           </Dialog.Description>
           <DialogInput 
-            label="Nome do marcador" 
+            label="Nome da rota" 
             onChangeText={this.handleInput} />
-          <TextOption>Cor do marcador</TextOption>    
+          <DialogInput 
+            label="Descrição da rota" 
+            onChangeText={this.handleInput} />
+          <TextOption>Tipo da rota</TextOption>    
+          <Picker
+            selectedValue={this.state.routeType}
+            style={{height: 50, width: 100}}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({routeType: itemValue})
+            }>
+            <Picker.Item label="Walk" value="walk" />
+            <Picker.Item label="Run" value="run" />
+            <Picker.Item label="Skiing" value="skiing" />
+            <Picker.Item label="Skating" value="sakting" />
+            <Picker.Item label="Horse Riding" value="horseriding" />
+            <Picker.Item label="Bike" value="bike" />
+            <Picker.Item label="Motor" value="motor" />
+            <Picker.Item label="Bus" value="bus" />
+            <Picker.Item label="Car" value="car" />
+            <Picker.Item label="Boat" value="boat" />
+            <Picker.Item label="Flight" value="flight" />
+          </Picker>
           <ColorButton />
           <TextOption>Cor escolhida {this.props.color}</TextOption>    
           <Dialog.Button label="Salvar" onPress={this.handleSubmit} />
