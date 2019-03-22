@@ -19,7 +19,7 @@ export class RouteDialog extends Component {
     routeName: '',
     saveRouteNextTime: false,
     routeDescription: null,
-    routeType: null
+    routeType: 'walk'
 
   };
 
@@ -29,29 +29,39 @@ export class RouteDialog extends Component {
 
     if(this.state.routeName && this.state.routeType && this.state.routeDescription) {
 
-      const newMarker = {
-        name: this.state.markerName,
-        color: this.props.color,
-        location: {
-            type: "Point",
-            coordinates:
-                [
-                    this.props.coordinates.latitude,
-                    this.props.coordinates.longitude
-                ]
+      // Transforming route points to MongoDB GeoJSON way from Google Maps Routes Way
+
+      let newCoordinates = [];
+
+      for (let i = 0; i < this.props.coordinates.length; i++) {
+
+        var newArray = this.props.coordinates[i];
+        newCoordinates.push([newArray.latitude, newArray.longitude]);
+
+      }
+
+      const newRoute = {
+        name: this.state.routeName,
+        description: this.state.description,
+        type: this.state.routeType,
+        distance: 'Padrão',
+        duration: 'Padrão',
+        geo: {
+
+          type: "LineString",
+          coordinates: newCoordinates
+
         }
       }
       
       // Verificar caso o usuário tem internet
 
-      await addMarker(newMarker).then(response => {
+      /* await addMarker(newMarker).then(response => {
         Alert.alert(
           'Mensagem',
           'O marcador foi adicionado com sucesso'
         );
-      }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error)))
-
-      this.props.addMarkerUpdate(true)
+      }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error))) */
 
       this.props.onSelectCancel(true)
 
@@ -114,11 +124,17 @@ export class RouteDialog extends Component {
   }
 
   handleInput = (value) => {
-    this.setState({ markerName: value })
+    this.setState({ routeName: value })
+  }
+
+  handleDescriptionInput = (value) => {
+    this.setState({ routeDescription: value })
   }
 
   handleCancel = () => {
+
     this.props.onSelectCancel(true)
+
   };
 
   render() {
@@ -130,21 +146,20 @@ export class RouteDialog extends Component {
               Agora você pode escolher um nome, tipo e descrição para seu marcador
           </Dialog.Description>
           <DialogInput 
-            label="Nome da rota" 
+            label="Nome da rota"
             onChangeText={this.handleInput} />
           <DialogInput 
             label="Descrição da rota" 
-            onChangeText={this.handleInput} />
+            onChangeText={this.handleDescriptionInput} />
           <TextOption>Tipo da rota</TextOption>    
           <PickerType
             selectedValue={this.state.routeType}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({routeType: itemValue})
+            onValueChange={(itemValue, itemIndex) => this.setState({ routeType: itemValue })
             }>
             <Picker.Item label="Walk" value="walk" />
             <Picker.Item label="Run" value="run" />
             <Picker.Item label="Skiing" value="skiing" />
-            <Picker.Item label="Skating" value="sakting" />
+            <Picker.Item label="Skating" value="skating" />
             <Picker.Item label="Horse Riding" value="horseriding" />
             <Picker.Item label="Bike" value="bike" />
             <Picker.Item label="Motor" value="motor" />
@@ -171,7 +186,9 @@ export class RouteDialog extends Component {
 const mapStateToProps = state => ({
 
   routeChanged: state.routes.routeChanged,
-  error: state.colorMarker.errorOnAdd
+  distance: state.routes.distance,
+  duration: state.time.durationTime,
+  error: state.routes.errorOnAdd
 
 });
 
