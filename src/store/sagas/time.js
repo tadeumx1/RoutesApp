@@ -15,6 +15,8 @@ export function* addTimeDuration(action) {
 
         const differenceTime = time - initialTime; 
 
+        yield put(TimeActions.addTimeDurationNumber(differenceTime))
+
         function msToTime(duration) {
 
             let milliseconds = parseInt((duration % 1000) / 100),

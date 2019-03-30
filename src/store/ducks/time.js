@@ -11,6 +11,8 @@ export const Types = {
 
     ADD_TIME_DURATION_SUCCESS: 'time/ADD_TIME_DURATION_SUCCESS',
 
+    ADD_TIME_DURATION_NUMBER: 'time/ADD_TIME_DURATION_NUMBER',
+
     STOP_TIME: 'time/STOP_TIME',
 
 };
@@ -22,6 +24,7 @@ const initialState = {
     time: null,
     initialTime: null,
     durationTime: null,
+    durationTimeNumber: null,
     timeActive: false,
     // errorOnAdd: null,
 
@@ -71,6 +74,16 @@ export default function time(state = initialState, action) {
             ...state,
             durationTime: action.payload.time,
             timeActive: true
+        
+          };
+
+        case Types.ADD_TIME_DURATION_NUMBER:
+
+          return {
+
+            ...state,
+            durationTimeNumber: action.payload.time
+            
         
           };  
 
@@ -139,6 +152,17 @@ export const Creators = {
     addTimeDurationSuccess: time => ({
 
       type: Types.ADD_TIME_DURATION_SUCCESS,
+      payload: {
+
+        time,
+
+      },
+
+    }),
+
+    addTimeDurationNumber: time => ({
+
+      type: Types.ADD_TIME_DURATION_NUMBER,
       payload: {
 
         time,

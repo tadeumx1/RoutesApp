@@ -36,6 +36,7 @@ export default function* rootSaga() {
         takeLatest(colorMarkerTypes.GET_MARKERS, addMarkersRequest),
         takeLatest(colorMarkerTypes.DELETE_MARKER, addMarkerDeleteRequest),
         takeLatest(colorMarkerTypes.CHANGE_MARKER, addMarkerUpdateRequest),
+        takeLatest(TimeTypes.ADD_TIME_DURATION, addTimeDuration),
         takeLatest(TimeTypes.ADD_TIME_DURATION, addTimeDuration)
 
     ]);

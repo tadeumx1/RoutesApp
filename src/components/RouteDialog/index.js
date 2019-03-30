@@ -42,10 +42,10 @@ export class RouteDialog extends Component {
 
       const newRoute = {
         name: this.state.routeName,
-        description: this.state.description,
+        description: this.state.routeDescription,
         type: this.state.routeType,
-        distance: 'Padrão',
-        duration: 'Padrão',
+        distance: parseFloat(this.props.distance).toFixed(2),
+        duration: this.props.durationNumber,
         geo: {
 
           type: "LineString",
@@ -56,6 +56,8 @@ export class RouteDialog extends Component {
       
       // Verificar caso o usuário tem internet
 
+      this.props.addRouteSave(newRoute)
+
       /* await addMarker(newMarker).then(response => {
         Alert.alert(
           'Mensagem',
@@ -63,7 +65,7 @@ export class RouteDialog extends Component {
         );
       }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error))) */
 
-      this.props.onSelectCancel(true)
+      // this.props.onSelectCancel(true)
 
     } else {
 
@@ -188,6 +190,7 @@ const mapStateToProps = state => ({
   routeChanged: state.routes.routeChanged,
   distance: state.routes.distance,
   duration: state.time.durationTime,
+  durationNumber: state.time.durationTimeNumber,
   error: state.routes.errorOnAdd
 
 });
