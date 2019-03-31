@@ -5,38 +5,58 @@ import idx from 'idx'
 
 import { Creators as RouteActions } from '../ducks/routes';
 
+export function* addGetRoutesRequest(action) {
+
+    try {
+
+    const response = yield call(api.get, '/routes');
+
+    if(response) {
+
+        const RoutesMap = idx(response, _ => _.data.routes) || []
+
+        yield all(RoutesMap.map(routes => {
+            return put(RouteActions.addGetRoutesSuccess(routes))
+        }));
+
+    }
+
+    } catch(err) {
+
+        alert('ERRO ' + err)
+        console.log('ERRO' + err)
+        console.tron.log('ERRO' + err)
+
+        yield put(RouteActions.addError('Erro ao buscar as rotas'));
+
+    }
+
+}
+
 export function* addRouteRequest(action) {
 
     try {
 
         // Checar caso a rota já existe no banco para não inserir rotas duplicadas
 
-        /* const response = yield call(api.post, '/routes', action.payload.route);
+        const responseRoutes = yield call(api.get, '/routes');
 
-        if(action.payload.route._id) {
+        const routes = responseRoutes.data
 
+        if (routes.find(route => route._id === action.payload.route._id)) { 
 
-
-        }
-
-        const favorites = yield select(state => state.favorites.data);
-
-        if (favorites.find(favorite => favorite.id === response.data.id)) {
-
-        yield put(FavoriteActions.addFavoriteError('Repositório duplicado'));
+            yield put(RouteActions.addError('Rota duplicada'));
 
         } else {
 
-        yield put(FavoriteActions.addFavoriteSuccess(response.data));
+            const response = yield call(api.post, '/routes', action.payload.route);
 
-        } */
+            if(response.data && response.status === 200) {
 
-        const response = yield call(api.post, '/routes', action.payload.route);
-
-        if(response.data && response.status === 200) {
-
-            yield put(RouteActions.addRouteSuccess(response.data))
+                yield put(RouteActions.addRouteSuccess(response.data))
             
+            }
+
         }
 
     } catch(err) {
