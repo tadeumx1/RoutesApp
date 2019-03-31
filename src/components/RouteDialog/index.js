@@ -58,14 +58,7 @@ export class RouteDialog extends Component {
 
       this.props.addRouteSave(newRoute)
 
-      /* await addMarker(newMarker).then(response => {
-        Alert.alert(
-          'Mensagem',
-          'O marcador foi adicionado com sucesso'
-        );
-      }).catch((error) => alert('Erro ao adicionar o marcador no mapa ' + JSON.stringify(error))) */
-
-      // this.props.onSelectCancel(true)
+      this.props.onSelectCancel(true)
 
     } else {
 
@@ -113,6 +106,15 @@ export class RouteDialog extends Component {
       Alert.alert(
         'Mensagem',
         'O marcador foi atualizado com sucesso'
+      );
+
+    }
+
+    if(this.props.routeAdd !== prevProps.routeAdd) {
+
+      Alert.alert(
+        'Mensagem',
+        'A rota foi adicionada com sucesso'
       );
 
     }
@@ -185,15 +187,22 @@ export class RouteDialog extends Component {
 
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+
+  console.tron.log(state)
+
+  return {
 
   routeChanged: state.routes.routeChanged,
   distance: state.routes.distance,
+  routeAdd: state.routes.routeAdd,
   duration: state.time.durationTime,
   durationNumber: state.time.durationTimeNumber,
   error: state.routes.errorOnAdd
 
-});
+  }
+
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators({ ...RouteActions, ...TimeActions }, dispatch);
 

@@ -7,9 +7,11 @@ import { all, takeLatest } from 'redux-saga/effects';
 
 import { Types as TimeTypes } from '../ducks/time';
 import { Types as colorMarkerTypes } from '../ducks/colorMarker';
+import { Types as RouteTypes } from '../ducks/routes';
 import { startTimeSaga } from './time';
 import { addTimeDuration } from './time';
 import { addMarkersRequest, addMarkerUpdateRequest, addMarkerDeleteRequest } from './colorMarker';
+import { addRouteRequest } from './routes';
 
 // Função Generator function*
 
@@ -37,7 +39,7 @@ export default function* rootSaga() {
         takeLatest(colorMarkerTypes.DELETE_MARKER, addMarkerDeleteRequest),
         takeLatest(colorMarkerTypes.CHANGE_MARKER, addMarkerUpdateRequest),
         takeLatest(TimeTypes.ADD_TIME_DURATION, addTimeDuration),
-        takeLatest(TimeTypes.ADD_TIME_DURATION, addTimeDuration)
+        takeLatest(RouteTypes.ADD_ROUTE, addRouteRequest)
 
     ]);
 

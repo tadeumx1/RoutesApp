@@ -9,6 +9,28 @@ export function* addRouteRequest(action) {
 
     try {
 
+        // Checar caso a rota já existe no banco para não inserir rotas duplicadas
+
+        /* const response = yield call(api.post, '/routes', action.payload.route);
+
+        if(action.payload.route._id) {
+
+
+
+        }
+
+        const favorites = yield select(state => state.favorites.data);
+
+        if (favorites.find(favorite => favorite.id === response.data.id)) {
+
+        yield put(FavoriteActions.addFavoriteError('Repositório duplicado'));
+
+        } else {
+
+        yield put(FavoriteActions.addFavoriteSuccess(response.data));
+
+        } */
+
         const response = yield call(api.post, '/routes', action.payload.route);
 
         if(response.data && response.status === 200) {
