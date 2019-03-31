@@ -41,20 +41,22 @@ export function* addRouteRequest(action) {
 
         const responseRoutes = yield call(api.get, '/routes');
 
-        const routes = responseRoutes.data
+        const routes = responseRoutes.data.routes
 
-        if (routes.find(route => route._id === action.payload.route._id)) { 
+        if (routes.find(route => route.name === action.payload.route.name)) { 
 
             yield put(RouteActions.addError('Rota duplicada'));
+
+            alert('Essa rota já existe, digite outro nome')
 
         } else {
 
             const response = yield call(api.post, '/routes', action.payload.route);
 
             if(response.data && response.status === 200) {
-
+    
                 yield put(RouteActions.addRouteSuccess(response.data))
-            
+                
             }
 
         }

@@ -187,11 +187,7 @@ export class RouteDialog extends Component {
 
 }
 
-const mapStateToProps = state => {
-
-  console.tron.log(state)
-
-  return {
+const mapStateToProps = state => ({
 
   routeChanged: state.routes.routeChanged,
   distance: state.routes.distance,
@@ -200,9 +196,7 @@ const mapStateToProps = state => {
   durationNumber: state.time.durationTimeNumber,
   error: state.routes.errorOnAdd
 
-  }
-
-};
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({ ...RouteActions, ...TimeActions }, dispatch);
 
