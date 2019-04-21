@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Alert, Button, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import Dialog from 'react-native-dialog';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Snackbar from 'react-native-snackbar';
 import idx from 'idx';
-import { Container } from './styles'
+// import { Container } from './styles'
 
 import RouteItem from '../../components/RouteItem'
 
@@ -22,25 +21,22 @@ export class ProfileRoutes extends Component {
 
   };
 
-  componentDidMount() {
+  async componentDidMount() {
 
-    this.props.getRoutes()
+    Snackbar.show({
+      title: 'Carregando',
+      duration: Snackbar.LENGTH_LONG,
+    });
+
+    await this.props.getRoutes()
 
   }
 
-  renderListItem = ({ item }) => <RouteItem route={item} />
-
   render() {
-    return (
-      <Container>
-          <FlatList
-            data={this.props.routes}
-            keyExtractor={item => String(item.id)}
-            renderItem={this.renderListItem}
-            onRefresh={this.props.routes}
-            // refreshing={this.state.refreshing}
-        />
-      </Container>
+    return ( 
+      <ScrollView>
+         {this.props.routes.map((item) => <RouteItem key={item._id} route={item} />)}
+      </ScrollView>
     );
   }
 
@@ -54,10 +50,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({ ...RouteActions, ...TimeActions }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(RouteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileRoutes);
 
 ProfileRoutes.propTypes = {
 
-    navigation: PropTypes.object
+  navigation: PropTypes.object
 
 }

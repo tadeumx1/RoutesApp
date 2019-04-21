@@ -5,13 +5,21 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export const Container = styled.View`
 
     flex: 1;
-    background-color: #ffffff;
     border-radius: ${props => props.theme.box.borderRadius}px;
     padding: ${props => props.theme.box.padding}px;
+    background-color: ${props => props.theme.box.backgroundColor};
+    padding: ${props => props.theme.box.padding}px;
+    margin-top: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+    shadow-color: #000;
+    shadow-offset: 0 0;
+    shadow-opacity: 1;
+    elevation: 3;
 
 `;
 
-export const RouteTitle = styled.View`
+export const RouteTitle = styled.Text`
 
     font-weight: bold;
     font-size: 14px;
@@ -20,14 +28,14 @@ export const RouteTitle = styled.View`
 
 export const InfoContainer = styled.View`
 
-    flex-direction: 'row';
+    flex-direction: row;
     margin-top: ${props => props.theme.metrics.baseMargin}px;
 
 `;
 
 export const Info = styled.View`
 
-    flex-direction: 'row';
+    flex-direction: row;
     margin-right: ${props => props.theme.metrics.baseMargin}px;
     align-items: center;
 

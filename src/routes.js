@@ -4,6 +4,7 @@ import Information from "./pages/Information/Information";
 import MapScreen from "./pages/MapScreen/MapScreen";
 import Routes from "./pages/Routes/Routes";
 import SettingsScreen from "./pages/SettingsScreen/SettingsScreen";
+import ProfileRoutes from "./pages/SettingsScreen/ProfileRoutes";
 
 import Icon from "react-native-vector-icons/Feather";
 import colors from "./styles/colors";
@@ -14,6 +15,20 @@ import RegisterUser from "./pages/RegisterUser/RegisterUser";
 import AuthLoadingScreen from "./pages/AuthLoadingScreen";
 import HomeLoadingScreen from "./pages/HomeLoadingScreen";
 import React from "react";
+
+const ProfileStack = createStackNavigator(
+	{
+		SettingsScreen: SettingsScreen,
+		ProfileRoutes: ProfileRoutes,
+	},
+	{
+		// initialRouteName: 'SettingsScreen',
+		headerMode: 'none',
+		header: null
+	}
+);
+
+const ProfileStackContainer = createAppContainer(ProfileStack);
 
 const TabNav = createBottomTabNavigator(
 	{
@@ -36,7 +51,7 @@ const TabNav = createBottomTabNavigator(
 			}
 		}, */
 		SettingsScreen: {
-			screen: SettingsScreen,
+			screen: ProfileStackContainer,
 			navigationOptions: {
 				title: 'Perfil'
 			}
@@ -99,7 +114,7 @@ const AuthStack = createStackNavigator(
 
 const AuthStackContainer = createAppContainer(AuthStack);
 
-const RootStack = createSwitchNavigator(
+const RootStack = createStackNavigator(
 	{
 		AuthLoading: { screen: AuthLoadingScreen },
 		App: { screen: TabNavContainer },
