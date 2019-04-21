@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Alert, ImageBackground, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Alert, ActivityIndicator, ImageBackground, StyleSheet, Button, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -42,9 +42,11 @@ export class ProfileRoutes extends Component {
         source={{ uri: remote }}
       >
 
-        <ScrollView>
-          {this.props.routes.map((item) => <RouteItem key={item._id} route={item} />)}
-        </ScrollView>
+        { this.props.loading ? <ActivityIndicator size="large" color="#00ff00" />  : 
+          <ScrollView>
+            {this.props.routes.map((item) => <RouteItem key={item._id} route={item} />)}
+          </ScrollView>  
+        }
 
       </ImageBackground>
 
@@ -69,6 +71,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
 
   routes: state.routes.data || [],
+  loading: state.routes.loading
 
 });
 
