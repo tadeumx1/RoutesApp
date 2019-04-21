@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Alert, Button, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Alert, ImageBackground, StyleSheet, Button, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +11,8 @@ import RouteItem from '../../components/RouteItem'
 
 import { Creators as TimeActions } from '../../store/ducks/time';
 import { Creators as RouteActions } from '../../store/ducks/routes';
+
+const remote = 'https://images.unsplash.com/photo-1551578547-eeff3b82183a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80';
 
 export class ProfileRoutes extends Component {
 
@@ -34,13 +36,35 @@ export class ProfileRoutes extends Component {
 
   render() {
     return ( 
-      <ScrollView>
-         {this.props.routes.map((item) => <RouteItem key={item._id} route={item} />)}
-      </ScrollView>
+
+      <ImageBackground
+        style={styles.image}
+        source={{ uri: remote }}
+      >
+
+        <ScrollView>
+          {this.props.routes.map((item) => <RouteItem key={item._id} route={item} />)}
+        </ScrollView>
+
+      </ImageBackground>
+
     );
   }
 
 }
+
+const styles = StyleSheet.create({
+
+  image: {
+      backgroundColor: '#ccc',
+      flex: 1,
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      justifyContent: 'center',
+  },
+
+})
 
 const mapStateToProps = state => ({
 

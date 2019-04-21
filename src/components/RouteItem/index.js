@@ -15,21 +15,21 @@ const RouteItem = ({ route }) => (
         
             <Info>
 
-                <Icon name="star" size={13} style={{ color: '#666666' }} />
+                <Icon name="map" size={13} style={{ color: '#666666' }} />
                 <InfoText>{(route.distance).toString()}</InfoText>
             
             </Info>
 
             <Info>
 
-                <Icon name="code-fork" size={13} style={{ color: '#666666' }} />
+                <Icon name="clock-o" size={13} style={{ color: '#666666' }} />
                 <InfoText>{(route.duration).toString()}</InfoText>
 
             </Info>
 
             <Info>
 
-                <Icon name="eye" size={13} style={{ color: '#666666' }} />
+                <Icon name="road" size={13} style={{ color: '#666666' }} />
                 <InfoText>{route.type}</InfoText>
 
             </Info>
