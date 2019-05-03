@@ -18,8 +18,8 @@ export class ProfileRoutes extends Component {
 
   state = {
 
-    loading: true,
-    refreshing: false,
+    // loading: true,
+    // refreshing: false,
 
   };
 
@@ -81,6 +81,36 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProfileRoutes);
 
 ProfileRoutes.propTypes = {
 
-  navigation: PropTypes.object
+  navigation: PropTypes.object,
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      geo: PropTypes.shape({
+        type: PropTypes.string,
+        coordinates: PropTypes.arrayOf(
+          PropTypes.shape({
+            zeroCoordinate: PropTypes.number,
+            oneCoordinate: PropTypes.number,
+          })
+        )
+      }),
+      _id: PropTypes.string,
+      name: PropTypes.string,
+      description: PropTypes.string,
+      type: PropTypes.string,
+      distance: PropTypes.number,
+      duration: PropTypes.number,
+      author: PropTypes.objectOf(
+        PropTypes.shape({
+          _id: PropTypes.string,
+          name: PropTypes.string,
+          email: PropTypes.string,
+          createdAt: PropTypes.date,
+          updatedAt: PropTypes.date,
+        })
+      ),
+      createdAt: PropTypes.date,
+      updatedAt: PropTypes.date,
+    })
+  )
 
 }

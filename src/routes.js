@@ -5,6 +5,7 @@ import MapScreen from "./pages/MapScreen/MapScreen";
 import Routes from "./pages/Routes/Routes";
 import SettingsScreen from "./pages/SettingsScreen/SettingsScreen";
 import ProfileRoutes from "./pages/SettingsScreen/ProfileRoutes";
+import ProfileMarkers from "./pages/SettingsScreen/ProfileMarkers";
 
 import Icon from "react-native-vector-icons/Feather";
 import colors from "./styles/colors";
@@ -20,6 +21,7 @@ const ProfileStack = createStackNavigator(
 	{
 		SettingsScreen: SettingsScreen,
 		ProfileRoutes: ProfileRoutes,
+		ProfileMarkers: ProfileMarkers,
 	},
 	{
 		// initialRouteName: 'SettingsScreen',

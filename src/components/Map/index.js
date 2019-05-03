@@ -398,7 +398,7 @@ class Map extends Component {
             <TouchableOpacity onPress={this.handleStartButton} style={styles.buttonRoute}>
               <View style={styles.buttonRouteCenter} />
             </TouchableOpacity>
-          ): null}
+          ): null} 
 
           {!this.state.markerActive && this.state.active ? (
             <TouchableOpacity onPress={this.handleStartButton} style={styles.buttonRoute}>
