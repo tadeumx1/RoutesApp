@@ -12,7 +12,7 @@ import MarkerItem from '../../components/MarkerItem'
 import { Creators as TimeActions } from '../../store/ducks/time';
 import { Creators as ColorMarkerActions } from '../../store/ducks/colorMarker';
 
-const remote = '';
+const remote = 'http://accountech.com.pk/wp-content/uploads/2016/08/blur-map.png';
 
 export class ProfileMarkers extends Component {
 
@@ -30,17 +30,6 @@ export class ProfileMarkers extends Component {
     await this.props.getMarkers()
 
   }
-
-  /*
-  
-    <ImageBackground
-        style={styles.image}
-        source={{ uri: remote }}
-    >
-
-    </ImageBackground>
-
-  */
 
   render() {
     return (

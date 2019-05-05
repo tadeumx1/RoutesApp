@@ -11,12 +11,12 @@ export function getPixelSize(pixels) {
 
 export async function getUser() {
 	try {
-		return await AsyncStorage.getItem('@RoutesApp:user');
+		return await AsyncStorage.getItem('@RoutesApp:username');
 	} catch (e) {
 		throw e
 	}
 };
 
 export const storeUser = async user => {
-	return AsyncStorage.setItem('@RoutesApp:user', JSON.stringify(user))
+	return AsyncStorage.setItem('@RoutesApp:username', JSON.stringify(user))
 };

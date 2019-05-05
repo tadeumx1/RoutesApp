@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { login } from '../../services/login';
+import { getUser, storeUser } from '../../utils';
+import Snackbar from 'react-native-snackbar';
 import PropTypes from 'prop-types';
 
 import { 
@@ -42,11 +45,11 @@ export default class Welcome extends Component {
         
     }
 
-    saveUser = async (username) => {
+    /* saveUser = async (username) => {
 
-        await AsyncStorage.setItem('@RoutesApp:username', username)
+        await AsyncStorage.setItem('@RoutesApp:username', JSON.stringify(user))
 
-    }
+    } */
 
     signIn = async () => {
 
@@ -58,38 +61,99 @@ export default class Welcome extends Component {
 
         try {
 
-            await this.saveUser(username);
+            // await this.saveUser(username);
 
-            /* return login(credentials)
+            const credentials = {
+
+                email: this.state.username,
+                password: this.state.password
+
+            }
+
+            return login(credentials)
                     .then(user => {
-                        storeUser(user)
-                            .then(user => {
-                                showMessage({
-                                    message: `Bem vindo`,
-                                    description: "Você foi logado com sucesso",
-                                    type: "success",
-                                    icon: "success",
-                                    backgroundColor: '#3cce71',
-                                    floating: true
-                                });
-                            })
+
+                        const userUsername = {
+                            username: user.userResponse.email,
+                            token: user.token
+                        }
+
+                        storeUser(userUsername)
                             .then(() => {
-                                this.props.navigation.navigate('Home');
+
+                                return getUser()
+                                    .then(user => {
+
+                                        const getUser = JSON.parse(user)
+
+                                        if(getUser && getUser.username && getUser.token) {
+
+                                            const resetAction = StackActions.reset ({
+
+                                                index: 0,
+                                                actions: [
+                            
+                                                    NavigationActions.navigate({ routeName: 'App' }),
+                            
+                                                ]
+                            
+                                            });
+    
+                                            this.setState({ loading: false })
+                            
+                                            this.props.navigation.dispatch(resetAction);
+
+                                        }
+
+                                    })
+                                    .catch(error => {
+
+                                        this.setState({ loading: false })
+
+                                        Snackbar.show({
+                                            title: 'Erro ao fazer login tente novamente',
+                                            duration: Snackbar.LENGTH_LONG,
+                                        });
+
+                                    })
+                                    
+
                             })
-                            .catch( error => { throw error })
                     })
                     .catch(error => {
-                        showMessage({
-                            message: "Erro",
-                            description: error.message,
-                            type: "danger",
-                            icon: "error",
-                            backgroundColor: '#f14e4e',
-                            floating: true
-                        })
-                    }); */
+                        // showMessage({
+                        //     message: "Erro",
+                        //     description: error.message,
+                        //     type: "danger",
+                        //     icon: "error",
+                        //     backgroundColor: '#f14e4e',
+                        //     floating: true
+                        // })
 
-            const resetAction = StackActions.reset ({
+                        this.setState({ loading: false })
+
+                        const errorReponse = error.response
+                        const status = error.response.status
+
+                        if(status === 400 && errorReponse.data.error === 'Invalid password') {
+
+                            Snackbar.show({
+                                title: 'A sua senha está incorreta',
+                                duration: Snackbar.LENGTH_LONG,
+                            });
+
+                        } else if(status === 400) {
+
+                            Snackbar.show({
+                                title: 'Usuário ou senha incorretos',
+                                duration: Snackbar.LENGTH_LONG,
+                            });
+    
+                        }
+
+                    });
+
+            /* const resetAction = StackActions.reset ({
 
                 index: 0,
                 actions: [
@@ -100,7 +164,7 @@ export default class Welcome extends Component {
     
             });
     
-            this.props.navigation.dispatch(resetAction);
+            this.props.navigation.dispatch(resetAction); */
 
         } catch(err) {
 
@@ -133,7 +197,7 @@ export default class Welcome extends Component {
 
                     autoCapitalize="none"
                     autoCorrect={false}
-                    placeholder="Digite seu usuário"
+                    placeholder="Digite seu email"
                     underlineColorAndroid='rgba(0, 0, 0, 0)'
                     value = {this.state.username}
                     onChangeText={username => this.setState({ username })}
@@ -145,9 +209,10 @@ export default class Welcome extends Component {
                     autoCapitalize="none"
                     autoCorrect={false}
                     placeholder="Digite sua senha"
+                    secureTextEntry={true}
                     underlineColorAndroid='rgba(0, 0, 0, 0)'
                     value = {this.state.password}
-                    onChangeText={username => this.setState({ password })}
+                    onChangeText={password => this.setState({ password })}
 
                 />
 

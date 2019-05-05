@@ -50,6 +50,7 @@ export const Input = styled.TextInput`
 
     background-color: #FFFFFF;
     border-radius: 3px;
+    margin-bottom: 15px;
     height: 44px;
 
     /*

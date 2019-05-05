@@ -12,31 +12,35 @@ const api = axios.create ({
 
 });
 
-api.interceptors.request.use(
+/* api.interceptors.request.use(
 	(config) => {
-	    config.headers.Authorization = `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDRmNzE4MTEzMTZjMTk4MDliOWExMyIsImlhdCI6MTU1NjkwNjc1MSwiZXhwIjoxNTU2OTkzMTUxfQ.irhMpQsNCxXQW1EdZnU9nCCKH9KHjMO5DWTUjfP8QmY'}`;
+	    config.headers.Authorization = `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDRmNzE4MTEzMTZjMTk4MDliOWExMyIsImlhdCI6MTU1NzAwNzc1MCwiZXhwIjoxNTU3MDk0MTUwfQ.lwjJolF63BIqh-kSidmYDtA7m83sVYDOi2dWn2exn_Y'}`;
 		console.log(config)
 		return Promise.resolve(config)
 	},
 	error => {
 		return Promise.reject(error);
 	}
-);
+); */
 
-/* api.interceptors.request.use(
+api.interceptors.request.use(
 	(config) => {
 		return getUser()
 			.then(user => {
 				user = JSON.parse(user);
 				if (user && user.token)
 					config.headers.Authorization = `Bearer ${user.token}`;
-				console.log(config)
+				return Promise.resolve(config)
+			})
+			.catch(error => {
+				console.tron.log('ERRO NO CATCH DO GET USER INTERCEPTOR')
+				console.tron.log(error)
 				return Promise.resolve(config)
 			})
 	},
 	error => {
 		return Promise.reject(error);
 	}
-); */
+);
 
 export default api

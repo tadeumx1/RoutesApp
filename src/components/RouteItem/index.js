@@ -16,7 +16,7 @@ const RouteItem = ({ route }) => (
             <Info>
 
                 <Icon name="map" size={13} style={{ color: '#666666' }} />
-                <InfoText>{(route.distance).toString()}</InfoText>
+                <InfoText>{(route.distance).toString() + ' km'}</InfoText>
             
             </Info>
 
