@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { login } from '../../services/login';
 import { getUser, storeUser } from '../../utils';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Snackbar from 'react-native-snackbar';
 import PropTypes from 'prop-types';
 
@@ -19,7 +21,9 @@ import {
 
 import { Container, Title, TextInformation, Error, Form, Input, Button, ButtonText } from './stylesStyled'
 
-export default class Welcome extends Component {
+import { Creators as UserActions } from '../../store/ducks/user';
+
+class Welcome extends Component {
 
     static navigationOptions = {
 
@@ -57,106 +61,14 @@ export default class Welcome extends Component {
 
         if(username.length === 0 ) return;
 
-        this.setState({ loading: true });
+        const credentials = {
 
-        try {
-
-            // await this.saveUser(username);
-
-            const credentials = {
-
-                email: this.state.username,
-                password: this.state.password
-
-            }
-
-            return login(credentials)
-                    .then(user => {
-
-                        const userUsername = {
-                            username: user.userResponse.email,
-                            token: user.token
-                        }
-
-                        storeUser(userUsername)
-                            .then(() => {
-
-                                return getUser()
-                                    .then(user => {
-
-                                        const getUser = JSON.parse(user)
-
-                                        if(getUser && getUser.username && getUser.token) {
-
-                                            const resetAction = StackActions.reset ({
-
-                                                index: 0,
-                                                actions: [
-                            
-                                                    NavigationActions.navigate({ routeName: 'App' }),
-                            
-                                                ]
-                            
-                                            });
-    
-                                            this.setState({ loading: false })
-                            
-                                            this.props.navigation.dispatch(resetAction);
-
-                                        }
-
-                                    })
-                                    .catch(error => {
-
-                                        this.setState({ loading: false })
-
-                                        Snackbar.show({
-                                            title: 'Erro ao fazer login tente novamente',
-                                            duration: Snackbar.LENGTH_LONG,
-                                        });
-
-                                    })
-
-                            })
-                    })
-                    .catch(error => {
-                        // showMessage({
-                        //     message: "Erro",
-                        //     description: error.message,
-                        //     type: "danger",
-                        //     icon: "error",
-                        //     backgroundColor: '#f14e4e',
-                        //     floating: true
-                        // })
-
-                        this.setState({ loading: false })
-
-                        const errorReponse = error.response
-                        const status = error.response.status
-
-                        if(status === 400 && errorReponse.data.error === 'Invalid password') {
-
-                            Snackbar.show({
-                                title: 'A sua senha está incorreta',
-                                duration: Snackbar.LENGTH_LONG,
-                            });
-
-                        } else if(status === 400) {
-
-                            Snackbar.show({
-                                title: 'Usuário ou senha incorretos',
-                                duration: Snackbar.LENGTH_LONG,
-                            });
-    
-                        }
-
-                    });
-
-        } catch(err) {
-
-            this.setState({ loading: false, errorMessage: 'Usuário não existe' });
+            email: this.state.username,
+            password: this.state.password
 
         }
+
+        this.props.loginUser(credentials, this.props.navigation)
 
     }
 
@@ -205,7 +117,7 @@ export default class Welcome extends Component {
 
                 <Button onPress={this.signIn}>
 
-                    { this.state.loading
+                    { this.props.loading
                     ? <ActivityIndicator size="small" color='#FFF' />
                     : <ButtonText>Prosseguir</ButtonText> }
 
@@ -217,3 +129,13 @@ export default class Welcome extends Component {
       )
     }
 };
+
+const mapStateToProps = state => ({
+
+    loading: state.user.loading
+
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(UserActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome)

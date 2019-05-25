@@ -8,10 +8,12 @@ import { all, takeLatest } from 'redux-saga/effects';
 import { Types as TimeTypes } from '../ducks/time';
 import { Types as colorMarkerTypes } from '../ducks/colorMarker';
 import { Types as RouteTypes } from '../ducks/routes';
+import { Types as UserTypes } from '../ducks/user';
 import { startTimeSaga } from './time';
 import { addTimeDuration } from './time';
 import { addMarkersRequest, addMarkerUpdateRequest, addMarkerDeleteRequest } from './colorMarker';
 import { addRouteRequest, addGetRoutesRequest } from './routes';
+import { addLoginRequest, loginUserSuccess } from './user';
 
 // Função Generator function*
 
@@ -40,7 +42,9 @@ export default function* rootSaga() {
         takeLatest(colorMarkerTypes.CHANGE_MARKER, addMarkerUpdateRequest),
         takeLatest(TimeTypes.ADD_TIME_DURATION, addTimeDuration),
         takeLatest(RouteTypes.ADD_ROUTE, addRouteRequest),
-        takeLatest(RouteTypes.GET_ROUTES, addGetRoutesRequest)
+        takeLatest(RouteTypes.GET_ROUTES, addGetRoutesRequest),
+        takeLatest(UserTypes.LOGIN_USER, addLoginRequest),
+        takeLatest(UserTypes.LOGIN_USER_SUCCESS, loginUserSuccess)
 
     ]);
 

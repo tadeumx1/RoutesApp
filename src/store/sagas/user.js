@@ -4,7 +4,9 @@ import api from '../../services/api'
 import idx from 'idx'
 
 import { Creators as UserActions } from '../ducks/user';
-import { storeUser } from '../../utils';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { getUser, storeUser } from '../../utils';
+import Snackbar from 'react-native-snackbar';
 
 export function* addLoginRequest(action) {
 
@@ -16,31 +18,22 @@ export function* addLoginRequest(action) {
 
         const userInformation = idx(response, _ => _.data.userResponse) || {}
 
+        const token = idx(response, _ => _.data.token) || {}
+
         const user = {
 
             email: userInformation.email,
-            id: userInformation.id,
-            token: userInformation.token
+            id: userInformation._id,
+            token
 
         }
 
-        yield put(UserActions.loginUserSuccess(user))
+        yield put(UserActions.loginUserSuccess(user, action.payload.navigation))
 
     }
 
-    } catch(err) {
-
-        // showMessage({
-        //     message: "Erro",
-        //     description: error.message,
-        //     type: "danger",
-        //     icon: "error",
-        //     backgroundColor: '#f14e4e',
-        //     floating: true
-        // })
-
-        this.setState({ loading: false })
-
+    } catch(error) {
+        
         const errorReponse = error.response
         const status = error.response.status
 
@@ -51,12 +44,16 @@ export function* addLoginRequest(action) {
                 duration: Snackbar.LENGTH_LONG,
             });
 
+            yield put(UserActions.addError('A sua senha está incorreta'))
+
         } else if(status === 400) {
 
             Snackbar.show({
                 title: 'Usuário ou senha incorretos',
                 duration: Snackbar.LENGTH_LONG,
             });
+
+            yield put(UserActions.addError('Usuário ou senha incorretos'))
     
         }
 
@@ -71,12 +68,14 @@ export function* loginUserSuccess(action) {
         storeUser(action.payload.user)
             .then(() => {
 
+                console.tron.log("Guardou o usuário")
+
                 return getUser()
                     .then(user => {
 
                     const getUser = JSON.parse(user)
 
-                    if(getUser && getUser.username && getUser.token) {
+                    if(getUser && getUser.email && getUser.token) {
 
                         const resetAction = StackActions.reset ({
 
@@ -86,17 +85,13 @@ export function* loginUserSuccess(action) {
                             ]
                             
                         });
-    
-                        this.setState({ loading: false })
-                            
-                        this.props.navigation.dispatch(resetAction);
+                                
+                        action.payload.navigation.dispatch(resetAction);
 
                     }
 
                 })
                 .catch(() => {
-
-                    this.setState({ loading: false })
 
                     Snackbar.show({
                         title: 'Erro ao fazer login tente novamente',
@@ -115,47 +110,7 @@ export function* loginUserSuccess(action) {
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 
-        yield put(RouteActions.addError('Erro ao buscar as rotas'));
-
-    }
-
-}
-
-export function* addRouteRequest(action) {
-
-    try {
-
-        // Checar caso a rota já existe no banco para não inserir rotas duplicadas
-
-        const responseRoutes = yield call(api.get, '/routes');
-
-        const routes = responseRoutes.data.routes
-
-        if (routes.find(route => route.name === action.payload.route.name)) { 
-
-            yield put(RouteActions.addError('Rota duplicada'));
-
-            alert('Essa rota já existe, digite outro nome')
-
-        } else {
-
-            const response = yield call(api.post, '/routes', action.payload.route);
-
-            if(response.data && response.status === 200) {
-    
-                yield put(RouteActions.addRouteSuccess(response.data))
-                
-            }
-
-        }
-
-    } catch(err) {
-
-        alert('ERRO ' + err)
-        console.log('ERRO' + err)
-        console.tron.log('ERRO' + err)
-
-        yield put(RouteActions.addError('Erro ao criar a rota'));
+        yield put(UserActions.addError('Erro ao fazer login tente novamente CATCH'));
 
     }
 

@@ -89,7 +89,8 @@ export default function user(state = initialState, action) {
           return {
 
             ...state,
-            error: action.payload.message
+            error: action.payload.message,
+            loading: false
 
           }
 
@@ -125,12 +126,13 @@ export default function user(state = initialState, action) {
 
 export const Creators = {
 
-    loginUser: credentials => ({
+    loginUser: (credentials, navigation) => ({
 
       type: Types.LOGIN_USER,
       payload: {
 
-        credentials
+        credentials,
+        navigation
 
         /* 
         
@@ -145,12 +147,13 @@ export const Creators = {
 
     }),
 
-    loginUserSuccess: user => ({
+    loginUserSuccess: (user, navigation) => ({
 
         type: Types.LOGIN_USER_SUCCESS,
         payload: {
 
-            user
+            user,
+            navigation
 
             /*
             
