@@ -22,8 +22,6 @@ export default class AuthLoadingScreen extends Component {
 
   async componentDidMount() {
 
-    AsyncStorage.clear()
-
     const username = await AsyncStorage.getItem('@RoutesApp:username');
 
     await this.appLoaded(username);

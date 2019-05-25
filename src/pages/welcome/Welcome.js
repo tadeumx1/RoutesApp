@@ -116,7 +116,6 @@ export default class Welcome extends Component {
                                         });
 
                                     })
-                                    
 
                             })
                     })
@@ -152,19 +151,6 @@ export default class Welcome extends Component {
                         }
 
                     });
-
-            /* const resetAction = StackActions.reset ({
-
-                index: 0,
-                actions: [
-    
-                    NavigationActions.navigate({ routeName: 'App' }),
-    
-                ]
-    
-            });
-    
-            this.props.navigation.dispatch(resetAction); */
 
         } catch(err) {
 
