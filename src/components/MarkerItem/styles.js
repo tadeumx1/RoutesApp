@@ -94,6 +94,6 @@ export const InfoText = styled.Text`
     color: ${props => props.theme.colors.dark};
     font-size: 12px;
     margin-left: 5px;
-
+    max-width: 100px;
 
 `;

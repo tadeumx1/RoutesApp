@@ -172,7 +172,7 @@ export class RouteDialog extends Component {
             <Picker.Item label="Boat" value="boat" />
             <Picker.Item label="Flight" value="flight" />
           </PickerType>
-          <CheckNext
+          <CheckNext  
             onClick={this.handleCheckBox}
             isChecked={this.state.saveRouteNextTime}
             leftText={"Salvar automático da próxima vez"}

@@ -23,7 +23,7 @@ export function* addGetRoutesRequest(action) {
 
     } catch(err) {
 
-        alert('ERRO ' + err)
+        // alert('ERRO ' + err)
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 
@@ -63,7 +63,7 @@ export function* addRouteRequest(action) {
 
     } catch(err) {
 
-        alert('ERRO ' + err)
+        // alert('ERRO ' + err)
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 

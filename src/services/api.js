@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-import { getUser } from '../utils'
+import React from 'react';
+
+import { getUser, deleteUser } from '../utils'
+import AuthLoadingScreen from '../pages/AuthLoadingScreen';
 
 const api = axios.create ({
 
-    baseURL: 'http://10.0.3.2:3000',
+	baseURL: 'http://10.0.3.2:3000',
+	// baseURL: 'http://localhost:3000',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -22,6 +26,38 @@ const api = axios.create ({
 		return Promise.reject(error);
 	}
 ); */
+
+api.interceptors.response.use((response) => {
+
+	// Do something with response data
+
+	return response;
+  },(error) => {
+
+	// Do something with response error
+	
+	// You can even test for a response code
+	// and try a new request before rejecting the promise
+
+	if (error.response.status === 401) {     
+	  const requestConfig = error.config;
+
+	  // O token JWT expirou
+
+	  deleteUser()
+		.then(user => {
+
+			return <AuthLoadingScreen />
+
+		})
+
+	  return axios(requestConfig);
+	  
+	}
+
+	return Promise.reject(error);
+
+});
 
 api.interceptors.request.use(
 	(config) => {

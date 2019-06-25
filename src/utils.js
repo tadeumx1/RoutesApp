@@ -20,3 +20,11 @@ export async function getUser() {
 export const storeUser = async user => {
 	return AsyncStorage.setItem('@RoutesApp:username', JSON.stringify(user))
 };
+
+export async function deleteUser() {
+	try {
+		return await AsyncStorage.removeItem('@RoutesApp:username');
+	} catch (e) {
+		throw e
+	}
+};

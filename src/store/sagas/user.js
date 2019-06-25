@@ -33,7 +33,7 @@ export function* addLoginRequest(action) {
     }
 
     } catch(error) {
-        
+
         const errorReponse = error.response
         const status = error.response.status
 
@@ -67,8 +67,6 @@ export function* loginUserSuccess(action) {
 
         storeUser(action.payload.user)
             .then(() => {
-
-                console.tron.log("Guardou o usuário")
 
                 return getUser()
                     .then(user => {
@@ -106,7 +104,7 @@ export function* loginUserSuccess(action) {
 
     catch(err) {
 
-        alert('ERRO ' + err)
+        // alert('ERRO ' + err)
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 

@@ -29,7 +29,7 @@ export function* addMarkersRequest(action) {
 
     } catch(err) {
 
-        alert('ERRO ' + err)
+        // alert('ERRO ' + err)
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 
@@ -53,7 +53,7 @@ export function* addMarkerUpdateRequest(action) {
 
     } catch(err) {
 
-        alert('ERRO ' + err)
+        // alert('ERRO ' + err)
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 
@@ -77,7 +77,7 @@ export function* addMarkerDeleteRequest(action) {
 
     } catch(err) {
 
-        alert('ERRO ' + err)
+        // alert('ERRO ' + err)
         console.log('ERRO' + err)
         console.tron.log('ERRO' + err)
 
